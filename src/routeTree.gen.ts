@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MarketsIndexRouteImport } from './routes/markets.index'
+import { Route as MarketsSymbolRouteImport } from './routes/markets.$symbol'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,30 +23,39 @@ const MarketsIndexRoute = MarketsIndexRouteImport.update({
   path: '/markets/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MarketsSymbolRoute = MarketsSymbolRouteImport.update({
+  id: '/markets/$symbol',
+  path: '/markets/$symbol',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/markets/$symbol': typeof MarketsSymbolRoute
   '/markets/': typeof MarketsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/markets/$symbol': typeof MarketsSymbolRoute
   '/markets': typeof MarketsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/markets/$symbol': typeof MarketsSymbolRoute
   '/markets/': typeof MarketsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/markets/'
+  fullPaths: '/' | '/markets/$symbol' | '/markets/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/markets'
-  id: '__root__' | '/' | '/markets/'
+  to: '/' | '/markets/$symbol' | '/markets'
+  id: '__root__' | '/' | '/markets/$symbol' | '/markets/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MarketsSymbolRoute: typeof MarketsSymbolRoute
   MarketsIndexRoute: typeof MarketsIndexRoute
 }
 
@@ -65,11 +75,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MarketsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/markets/$symbol': {
+      id: '/markets/$symbol'
+      path: '/markets/$symbol'
+      fullPath: '/markets/$symbol'
+      preLoaderRoute: typeof MarketsSymbolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MarketsSymbolRoute: MarketsSymbolRoute,
   MarketsIndexRoute: MarketsIndexRoute,
 }
 export const routeTree = rootRouteImport
