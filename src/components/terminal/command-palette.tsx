@@ -37,7 +37,7 @@ export function CommandPalette({
   };
 
   return (
-    <CommandDialog open={open} onOpenChange={onOpenChange} title="Command palette" description="Search the terminal">
+    <CommandDialog open={open} onOpenChange={onOpenChange}>
       <CommandInput placeholder="Search markets, signals, strategies, journal, news…" />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
