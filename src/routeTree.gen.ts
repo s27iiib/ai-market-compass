@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ScannerRouteImport } from './routes/scanner'
 import { Route as MarketsIndexRouteImport } from './routes/markets.index'
 import { Route as MarketsSymbolRouteImport } from './routes/markets.$symbol'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScannerRoute = ScannerRouteImport.update({
+  id: '/scanner',
+  path: '/scanner',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MarketsIndexRoute = MarketsIndexRouteImport.update({
@@ -31,30 +37,34 @@ const MarketsSymbolRoute = MarketsSymbolRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/scanner': typeof ScannerRoute
   '/markets/$symbol': typeof MarketsSymbolRoute
   '/markets/': typeof MarketsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/scanner': typeof ScannerRoute
   '/markets/$symbol': typeof MarketsSymbolRoute
   '/markets': typeof MarketsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/scanner': typeof ScannerRoute
   '/markets/$symbol': typeof MarketsSymbolRoute
   '/markets/': typeof MarketsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/markets/$symbol' | '/markets/'
+  fullPaths: '/' | '/scanner' | '/markets/$symbol' | '/markets/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/markets/$symbol' | '/markets'
-  id: '__root__' | '/' | '/markets/$symbol' | '/markets/'
+  to: '/' | '/scanner' | '/markets/$symbol' | '/markets'
+  id: '__root__' | '/' | '/scanner' | '/markets/$symbol' | '/markets/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ScannerRoute: typeof ScannerRoute
   MarketsSymbolRoute: typeof MarketsSymbolRoute
   MarketsIndexRoute: typeof MarketsIndexRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scanner': {
+      id: '/scanner'
+      path: '/scanner'
+      fullPath: '/scanner'
+      preLoaderRoute: typeof ScannerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/markets/': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ScannerRoute: ScannerRoute,
   MarketsSymbolRoute: MarketsSymbolRoute,
   MarketsIndexRoute: MarketsIndexRoute,
 }
