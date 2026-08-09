@@ -120,7 +120,7 @@ export function Chip({
   );
 }
 
-export function BiasBadge({ bias, className }: { bias: Bias; className?: string }) {
+export function BiasBadge({ bias, className }: { bias: Bias; className?: string | undefined }) {
   const tone: Tone = bias === "BULLISH" ? "bull" : bias === "BEARISH" ? "bear" : "neutral";
   return (
     <Chip tone={tone} className={className}>
@@ -129,7 +129,7 @@ export function BiasBadge({ bias, className }: { bias: Bias; className?: string 
   );
 }
 
-export function DirectionBadge({ direction, className }: { direction: Direction; className?: string }) {
+export function DirectionBadge({ direction, className }: { direction: Direction; className?: string | undefined }) {
   const tone: Tone = direction === "LONG" ? "bull" : direction === "SHORT" ? "bear" : "warn";
   return (
     <Chip tone={tone} className={className}>
@@ -138,7 +138,7 @@ export function DirectionBadge({ direction, className }: { direction: Direction;
   );
 }
 
-export function RegimeBadge({ regime, className }: { regime: Regime; className?: string }) {
+export function RegimeBadge({ regime, className }: { regime: Regime; className?: string | undefined }) {
   const tone: Tone = regime.includes("BULL")
     ? "bull"
     : regime.includes("BEAR")
@@ -164,7 +164,7 @@ export function ImportanceBadge({ importance }: { importance: Importance }) {
   return <Chip tone={tone}>{importance}</Chip>;
 }
 
-export function ChangeValue({ pct, className }: { pct: number; className?: string }) {
+export function ChangeValue({ pct, className }: { pct: number; className?: string | undefined }) {
   return (
     <span className={cn("num text-sm font-semibold", pct >= 0 ? "text-bull" : "text-bear", className)}>
       {fmtPct(pct)}
@@ -236,7 +236,7 @@ export function AIConfluenceScore({
   );
 }
 
-export function ScoreBar({ score, className }: { score: number; className?: string }) {
+export function ScoreBar({ score, className }: { score: number; className?: string | undefined }) {
   const tone = scoreTone(score);
   return (
     <div className={cn("flex items-center gap-2", className)}>
@@ -313,7 +313,7 @@ export function Sparkline({
 
 /* --------------------------------------------------------- Data states */
 
-export function LoadingPanel({ rows = 4, className }: { rows?: number; className?: string }) {
+export function LoadingPanel({ rows = 4, className }: { rows?: number | undefined; className?: string | undefined }) {
   return (
     <div className={cn("space-y-2", className)}>
       {Array.from({ length: rows }).map((_, i) => (
@@ -323,7 +323,7 @@ export function LoadingPanel({ rows = 4, className }: { rows?: number; className
   );
 }
 
-export function ErrorState({ onRetry, message }: { onRetry?: () => void; message?: string }) {
+export function ErrorState({ onRetry, message }: { onRetry?: (() => void) | undefined; message?: string | undefined }) {
   return (
     <div className="flex flex-col items-center justify-center gap-3 py-8 text-center">
       <AlertTriangle className="size-5 text-bear" />
@@ -339,7 +339,7 @@ export function ErrorState({ onRetry, message }: { onRetry?: () => void; message
   );
 }
 
-export function EmptyState({ title, hint, action }: { title: string; hint?: string; action?: ReactNode }) {
+export function EmptyState({ title, hint, action }: { title: string; hint?: string | undefined; action?: ReactNode }) {
   return (
     <div className="flex flex-col items-center justify-center gap-2 py-10 text-center">
       <Inbox className="size-5 text-muted-foreground" />
@@ -358,7 +358,7 @@ export function OfflineState() {
   );
 }
 
-export function DemoTag({ className }: { className?: string }) {
+export function DemoTag({ className }: { className?: string | undefined }) {
   return (
     <span
       className={cn(
@@ -380,7 +380,7 @@ export function CheckRow({
 }: {
   ok: boolean;
   children: ReactNode;
-  onClick?: () => void | undefined;
+  onClick?: (() => void) | undefined;
   expanded?: boolean | undefined;
   detail?: string | undefined;
 }) {
