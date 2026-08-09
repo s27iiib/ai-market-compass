@@ -33,7 +33,7 @@ export const Route = createFileRoute("/scanner")({
       { property: "og:description", content: "Rank and filter gold and FX setups by AI score, probability and risk/reward." },
     ],
   }),
-  component: Scanner;
+  component: Scanner,
 });
 
 type SortKey = "score" | "prob" | "rr" | "change";
