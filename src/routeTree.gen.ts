@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AiAnalystRouteImport } from './routes/ai-analyst'
 import { Route as ScannerRouteImport } from './routes/scanner'
 import { Route as MarketsIndexRouteImport } from './routes/markets.index'
 import { Route as MarketsSymbolRouteImport } from './routes/markets.$symbol'
@@ -17,6 +18,11 @@ import { Route as MarketsSymbolRouteImport } from './routes/markets.$symbol'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiAnalystRoute = AiAnalystRouteImport.update({
+  id: '/ai-analyst',
+  path: '/ai-analyst',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ScannerRoute = ScannerRouteImport.update({
@@ -37,12 +43,14 @@ const MarketsSymbolRoute = MarketsSymbolRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ai-analyst': typeof AiAnalystRoute
   '/scanner': typeof ScannerRoute
   '/markets/$symbol': typeof MarketsSymbolRoute
   '/markets/': typeof MarketsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ai-analyst': typeof AiAnalystRoute
   '/scanner': typeof ScannerRoute
   '/markets/$symbol': typeof MarketsSymbolRoute
   '/markets': typeof MarketsIndexRoute
@@ -50,20 +58,28 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ai-analyst': typeof AiAnalystRoute
   '/scanner': typeof ScannerRoute
   '/markets/$symbol': typeof MarketsSymbolRoute
   '/markets/': typeof MarketsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/scanner' | '/markets/$symbol' | '/markets/'
+  fullPaths: '/' | '/ai-analyst' | '/scanner' | '/markets/$symbol' | '/markets/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/scanner' | '/markets/$symbol' | '/markets'
-  id: '__root__' | '/' | '/scanner' | '/markets/$symbol' | '/markets/'
+  to: '/' | '/ai-analyst' | '/scanner' | '/markets/$symbol' | '/markets'
+  id:
+    | '__root__'
+    | '/'
+    | '/ai-analyst'
+    | '/scanner'
+    | '/markets/$symbol'
+    | '/markets/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AiAnalystRoute: typeof AiAnalystRoute
   ScannerRoute: typeof ScannerRoute
   MarketsSymbolRoute: typeof MarketsSymbolRoute
   MarketsIndexRoute: typeof MarketsIndexRoute
@@ -76,6 +92,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai-analyst': {
+      id: '/ai-analyst'
+      path: '/ai-analyst'
+      fullPath: '/ai-analyst'
+      preLoaderRoute: typeof AiAnalystRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/scanner': {
@@ -104,6 +127,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AiAnalystRoute: AiAnalystRoute,
   ScannerRoute: ScannerRoute,
   MarketsSymbolRoute: MarketsSymbolRoute,
   MarketsIndexRoute: MarketsIndexRoute,
