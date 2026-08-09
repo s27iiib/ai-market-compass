@@ -43,13 +43,13 @@ export function Panel({
   ai,
   dense,
 }: {
-  title?: ReactNode;
-  subtitle?: ReactNode;
-  actions?: ReactNode;
+  title?: ReactNode | undefined;
+  subtitle?: ReactNode | undefined;
+  actions?: ReactNode | undefined;
   children: ReactNode;
-  className?: string;
-  ai?: boolean;
-  dense?: boolean;
+  className?: string | undefined;
+  ai?: boolean | undefined;
+  dense?: boolean | undefined;
 }) {
   return (
     <section className={cn(ai ? "panel-ai" : "panel", "flex flex-col overflow-hidden", className)}>
@@ -83,9 +83,9 @@ export function StatTile({
 }: {
   label: string;
   value: ReactNode;
-  tone?: Tone;
-  hint?: string;
-  className?: string;
+  tone?: Tone | undefined;
+  hint?: string | undefined;
+  className?: string | undefined;
 }) {
   return (
     <div className={cn("rounded-md border border-border bg-panel/60 px-3 py-2.5", className)}>
@@ -104,8 +104,8 @@ export function Chip({
   className,
 }: {
   children: ReactNode;
-  tone?: Tone;
-  className?: string;
+  tone?: Tone | undefined;
+  className?: string | undefined;
 }) {
   return (
     <span
@@ -181,9 +181,9 @@ export function AIConfluenceScore({
   caption,
 }: {
   score: number;
-  size?: number;
-  label?: boolean;
-  caption?: string;
+  size?: number | undefined;
+  label?: boolean | undefined;
+  caption?: string | undefined;
 }) {
   const tone = scoreTone(score);
   const r = (size - 10) / 2;
@@ -256,8 +256,8 @@ export function ProbabilityBar({
 }: {
   label: string;
   value: number;
-  tone?: Tone;
-  sublabel?: string;
+  tone?: Tone | undefined;
+  sublabel?: string | undefined;
 }) {
   return (
     <div>
@@ -282,9 +282,9 @@ export function Sparkline({
   tone = "bull",
 }: {
   data: number[];
-  width?: number;
-  height?: number;
-  tone?: Tone;
+  width?: number | undefined;
+  height?: number | undefined;
+  tone?: Tone | undefined;
 }) {
   if (data.length < 2) return null;
   const min = Math.min(...data);
@@ -380,9 +380,9 @@ export function CheckRow({
 }: {
   ok: boolean;
   children: ReactNode;
-  onClick?: () => void;
-  expanded?: boolean;
-  detail?: string;
+  onClick?: () => void | undefined;
+  expanded?: boolean | undefined;
+  detail?: string | undefined;
 }) {
   return (
     <li>
