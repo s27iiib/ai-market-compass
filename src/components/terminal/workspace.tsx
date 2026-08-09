@@ -60,7 +60,7 @@ export function AIIntelligencePanel({ analysis }: { analysis: MarketAnalysis }) 
 
         <div className="mt-4 space-y-2.5 border-t border-border pt-3">
           <div className="label-xs">Directional scenarios</div>
-          {analysis.scenarios.map((sc) => (
+          {analysis.forecast.scenarios.map((sc) => (
             <ProbabilityBar
               key={sc.scenario}
               label={sc.scenario === "BASE" ? "RANGE" : sc.scenario === "BULLISH" ? "UP" : "DOWN"}
