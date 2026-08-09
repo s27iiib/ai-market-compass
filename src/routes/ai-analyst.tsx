@@ -5,9 +5,8 @@ import { Send, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { PageHeader } from "@/components/terminal/app-shell";
-import { Chip, Panel, ShimmerLine } from "@/components/terminal/primitives";
-import { aiService, type AnalystReply } from "@/services";
-import aiLogo from "@/assets/ai-analyst.png";
+import { Chip, LoadingPanel, Panel } from "@/components/terminal/primitives";
+import { aiService } from "@/services";
 
 export const Route = createFileRoute("/ai-analyst")({
   head: () => ({
@@ -18,20 +17,23 @@ export const Route = createFileRoute("/ai-analyst")({
         content: "Ask the AI analyst about gold and FX setups, macro drivers, invalidation levels and position sizing.",
       },
       { property: "og:title", content: "AI Analyst — Aurum AI Trading Intelligence" },
-      { property: "og:description", content: "Conversational market reasoning with explicit confidence and invalidation levels." },
+      {
+        property: "og:description",
+        content: "Conversational market reasoning with explicit confidence and invalidation levels.",
+      },
     ],
   }),
   component: AIAnalyst,
 });
 
-type Msg = { id: string; role: "user" | "assistant"; text: string; reply?: AnalystReply };
+type Msg = { id: string; role: "user" | "assistant"; text: string };
 
 const SUGGESTIONS = [
   "Why is gold rising today?",
   "Is this a good entry for XAU/USD?",
-  "What is the biggest risk to this trade?",
-  "What happens if US CPI comes in hot?",
-  "Which pair has the strongest setup right now?",
+  "What would invalidate the current setup?",
+  "What are the major risks today?",
+  "Compare gold and EUR/USD",
 ];
 
 function AIAnalyst() {
@@ -46,9 +48,8 @@ function AIAnalyst() {
   const endRef = useRef<HTMLDivElement>(null);
 
   const ask = useMutation({
-    mutationFn: (q: string) => aiService.ask(q),
-    onSuccess: (reply) =>
-      setMessages((m) => [...m, { id: crypto.randomUUID(), role: "assistant", text: reply.answer, reply }]),
+    mutationFn: (q: string) => aiService.chat(q),
+    onSuccess: (answer) => setMessages((m) => [...m, { id: crypto.randomUUID(), role: "assistant", text: answer }]),
   });
 
   useEffect(() => {
@@ -85,28 +86,12 @@ function AIAnalyst() {
               </div>
             ) : (
               <div key={m.id} className="flex gap-3">
-                <img
-                  src={aiLogo}
-                  alt="Aurum AI analyst"
-                  className="mt-0.5 size-7 shrink-0 rounded-full border border-ai/30 object-cover"
-                />
+                <div className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full border border-ai/30 bg-ai/12 text-[0.625rem] font-bold tracking-tight text-ai">
+                  AU
+                </div>
                 <div className="min-w-0 flex-1 space-y-2">
                   <p className="text-sm leading-relaxed whitespace-pre-line text-foreground/90">{m.text}</p>
-                  {m.reply && (
-                    <div className="flex flex-wrap gap-1.5">
-                      <Chip tone="ai">Confidence {m.reply.confidence}%</Chip>
-                      {m.reply.tags.map((t) => (
-                        <Chip key={t} tone="neutral">
-                          {t}
-                        </Chip>
-                      ))}
-                    </div>
-                  )}
-                  {m.reply?.invalidation && (
-                    <p className="rounded-md border border-warn/25 bg-warn/8 px-3 py-2 text-[0.6875rem] text-warn">
-                      Invalidation: {m.reply.invalidation}
-                    </p>
-                  )}
+                  {m.id !== "intro" && <Chip tone="ai">Model estimate · simulated data</Chip>}
                 </div>
               </div>
             ),
@@ -114,9 +99,11 @@ function AIAnalyst() {
 
           {ask.isPending && (
             <div className="flex gap-3">
-              <img src={aiLogo} alt="" className="mt-0.5 size-7 shrink-0 rounded-full border border-ai/30 object-cover" />
-              <div className="flex-1 space-y-2 pt-1">
-                <ShimmerLine label="Reading structure, macro and positioning…" />
+              <div className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full border border-ai/30 bg-ai/12 text-[0.625rem] font-bold text-ai">
+                AU
+              </div>
+              <div className="flex-1 pt-1">
+                <LoadingPanel rows={2} />
               </div>
             </div>
           )}
