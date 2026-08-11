@@ -73,14 +73,22 @@ function Logo({ collapsed }: { collapsed: boolean }) {
       {!collapsed && (
         <div className="min-w-0">
           <div className="truncate text-sm font-semibold tracking-tight">AURUM</div>
-          <div className="truncate text-[0.625rem] tracking-widest text-ai uppercase">AI Trading Intelligence</div>
+          <div className="truncate text-[0.625rem] tracking-widest text-ai uppercase">
+            AI Trading Intelligence
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-function NavList({ collapsed, onNavigate }: { collapsed: boolean; onNavigate?: (() => void) | undefined }) {
+function NavList({
+  collapsed,
+  onNavigate,
+}: {
+  collapsed: boolean;
+  onNavigate?: (() => void) | undefined;
+}) {
   return (
     <nav className="flex-1 space-y-0.5 overflow-y-auto px-2 py-2">
       {NAV.slice(0, 10).map((item) => (
@@ -112,7 +120,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const title =
     TITLES[pathname] ??
-    (pathname.startsWith("/markets/") ? `${pathname.split("/").pop()?.replace("-", "/").toUpperCase()} Workspace` : "Terminal");
+    (pathname.startsWith("/markets/")
+      ? `${pathname.split("/").pop()?.replace("-", "/").toUpperCase()} Workspace`
+      : "Terminal");
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -173,7 +183,9 @@ export function AppShell({ children }: { children: ReactNode }) {
             {!collapsed && (
               <div className="min-w-0">
                 <div className="truncate text-xs font-medium">M. Kessler</div>
-                <div className="truncate text-[0.625rem] text-muted-foreground">Pro · Demo account</div>
+                <div className="truncate text-[0.625rem] text-muted-foreground">
+                  Pro · Demo account
+                </div>
               </div>
             )}
           </div>
@@ -182,7 +194,11 @@ export function AppShell({ children }: { children: ReactNode }) {
             onClick={() => setCollapsed((v) => !v)}
             className="mt-1 flex w-full items-center justify-center gap-2 rounded-md py-1.5 text-[0.6875rem] text-muted-foreground hover:bg-sidebar-accent"
           >
-            {collapsed ? <ChevronsRight className="size-3.5" /> : <ChevronsLeft className="size-3.5" />}
+            {collapsed ? (
+              <ChevronsRight className="size-3.5" />
+            ) : (
+              <ChevronsLeft className="size-3.5" />
+            )}
             {!collapsed && "Collapse"}
           </button>
         </div>
@@ -205,7 +221,9 @@ export function AppShell({ children }: { children: ReactNode }) {
                   <NavList collapsed={false} />
                 </SheetContent>
               </Sheet>
-              <h1 className="truncate text-sm font-semibold tracking-tight sm:text-base">{title}</h1>
+              <h1 className="truncate text-sm font-semibold tracking-tight sm:text-base">
+                {title}
+              </h1>
               <DemoTag className="hidden sm:inline-block" />
             </div>
 
@@ -226,9 +244,16 @@ export function AppShell({ children }: { children: ReactNode }) {
               >
                 <Search className="size-3.5" />
                 <span>Search markets, signals, journal…</span>
-                <kbd className="num ml-2 rounded border border-border bg-muted px-1 py-0.5 text-[0.625rem]">⌘K</kbd>
+                <kbd className="num ml-2 rounded border border-border bg-muted px-1 py-0.5 text-[0.625rem]">
+                  ⌘K
+                </kbd>
               </button>
-              <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setPaletteOpen(true)}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden"
+                onClick={() => setPaletteOpen(true)}
+              >
                 <Search className="size-4" />
               </Button>
               <NotificationBell />
@@ -279,7 +304,9 @@ export function PageHeader({
       <div className="min-w-0">
         {eyebrow && <div className="label-xs">{eyebrow}</div>}
         <h2 className="truncate text-lg font-semibold tracking-tight sm:text-xl">{title}</h2>
-        {description && <p className="mt-1 max-w-2xl text-xs text-muted-foreground sm:text-sm">{description}</p>}
+        {description && (
+          <p className="mt-1 max-w-2xl text-xs text-muted-foreground sm:text-sm">{description}</p>
+        )}
       </div>
       {actions && <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div>}
     </div>

@@ -14,12 +14,14 @@ export const Route = createFileRoute("/ai-analyst")({
       { title: "AI Analyst — Aurum AI Trading Intelligence" },
       {
         name: "description",
-        content: "Ask the AI analyst about gold and FX setups, macro drivers, invalidation levels and position sizing.",
+        content:
+          "Ask the AI analyst about gold and FX setups, macro drivers, invalidation levels and position sizing.",
       },
       { property: "og:title", content: "AI Analyst — Aurum AI Trading Intelligence" },
       {
         property: "og:description",
-        content: "Conversational market reasoning with explicit confidence and invalidation levels.",
+        content:
+          "Conversational market reasoning with explicit confidence and invalidation levels.",
       },
     ],
   }),
@@ -49,7 +51,8 @@ function AIAnalyst() {
 
   const ask = useMutation({
     mutationFn: (q: string) => aiService.chat(q),
-    onSuccess: (answer) => setMessages((m) => [...m, { id: crypto.randomUUID(), role: "assistant", text: answer }]),
+    onSuccess: (answer) =>
+      setMessages((m) => [...m, { id: crypto.randomUUID(), role: "assistant", text: answer }]),
   });
 
   useEffect(() => {
@@ -90,7 +93,9 @@ function AIAnalyst() {
                   AU
                 </div>
                 <div className="min-w-0 flex-1 space-y-2">
-                  <p className="text-sm leading-relaxed whitespace-pre-line text-foreground/90">{m.text}</p>
+                  <p className="text-sm leading-relaxed whitespace-pre-line text-foreground/90">
+                    {m.text}
+                  </p>
                   {m.id !== "intro" && <Chip tone="ai">Model estimate · simulated data</Chip>}
                 </div>
               </div>
@@ -143,7 +148,12 @@ function AIAnalyst() {
               placeholder="Ask about a setup, a macro driver, or your risk…"
               className="min-h-[3.25rem] resize-none text-sm"
             />
-            <Button type="submit" size="icon" disabled={ask.isPending || !input.trim()} aria-label="Send message">
+            <Button
+              type="submit"
+              size="icon"
+              disabled={ask.isPending || !input.trim()}
+              aria-label="Send message"
+            >
               <Send className="size-4" />
             </Button>
           </form>

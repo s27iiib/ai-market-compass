@@ -2,7 +2,8 @@ import type { Bias, Direction, RiskLevel } from "@/lib/types";
 
 export function fmtPrice(value: number, symbol?: string) {
   if (symbol === "USD/JPY") return value.toFixed(3);
-  if (value >= 100) return value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  if (value >= 100)
+    return value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   return value.toFixed(4);
 }
 
@@ -11,7 +12,11 @@ export function fmtPct(value: number, digits = 2) {
 }
 
 export function fmtMoney(value: number) {
-  return value.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+  return value.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  });
 }
 
 export function directionTone(d: Direction | Bias | null) {

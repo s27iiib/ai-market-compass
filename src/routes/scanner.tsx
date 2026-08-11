@@ -2,7 +2,13 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { PageHeader } from "@/components/terminal/app-shell";
 import {
@@ -27,10 +33,14 @@ export const Route = createFileRoute("/scanner")({
       { title: "Market Scanner — Aurum AI Trading Intelligence" },
       {
         name: "description",
-        content: "Filter every tracked instrument by AI score, direction, strategy, risk, regime and risk/reward.",
+        content:
+          "Filter every tracked instrument by AI score, direction, strategy, risk, regime and risk/reward.",
       },
       { property: "og:title", content: "Market Scanner — Aurum AI Trading Intelligence" },
-      { property: "og:description", content: "Rank and filter gold and FX setups by AI score, probability and risk/reward." },
+      {
+        property: "og:description",
+        content: "Rank and filter gold and FX setups by AI score, probability and risk/reward.",
+      },
     ],
   }),
   component: Scanner,
@@ -39,7 +49,10 @@ export const Route = createFileRoute("/scanner")({
 type SortKey = "score" | "prob" | "rr" | "change";
 
 function Scanner() {
-  const { data, isLoading, isError, refetch } = useQuery({ queryKey: ["scanner"], queryFn: marketService.getScanner });
+  const { data, isLoading, isError, refetch } = useQuery({
+    queryKey: ["scanner"],
+    queryFn: marketService.getScanner,
+  });
   const [minScore, setMinScore] = useState(0);
   const [minRR, setMinRR] = useState(0);
   const [direction, setDirection] = useState("ALL");
@@ -89,7 +102,12 @@ function Scanner() {
         <div className="grid gap-4 p-4 sm:grid-cols-2 xl:grid-cols-5">
           <div>
             <div className="label-xs mb-2">Min AI score · {minScore}</div>
-            <Slider value={[minScore]} onValueChange={([v]) => setMinScore(v ?? 0)} max={95} step={5} />
+            <Slider
+              value={[minScore]}
+              onValueChange={([v]) => setMinScore(v ?? 0)}
+              max={95}
+              step={5}
+            />
           </div>
           <div>
             <div className="label-xs mb-2">Min risk/reward · {minRR.toFixed(1)}</div>
@@ -117,7 +135,15 @@ function Scanner() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {["ALL", "TRENDING BULL", "TRENDING BEAR", "RANGE", "BREAKOUT", "REVERSAL", "LOW VOLATILITY"].map((d) => (
+                {[
+                  "ALL",
+                  "TRENDING BULL",
+                  "TRENDING BEAR",
+                  "RANGE",
+                  "BREAKOUT",
+                  "REVERSAL",
+                  "LOW VOLATILITY",
+                ].map((d) => (
                   <SelectItem key={d} value={d} className="text-xs">
                     {d}
                   </SelectItem>
@@ -132,10 +158,18 @@ function Scanner() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="score" className="text-xs">AI score</SelectItem>
-                <SelectItem value="prob" className="text-xs">Probability</SelectItem>
-                <SelectItem value="rr" className="text-xs">Risk/reward</SelectItem>
-                <SelectItem value="change" className="text-xs">Daily change</SelectItem>
+                <SelectItem value="score" className="text-xs">
+                  AI score
+                </SelectItem>
+                <SelectItem value="prob" className="text-xs">
+                  Probability
+                </SelectItem>
+                <SelectItem value="rr" className="text-xs">
+                  Risk/reward
+                </SelectItem>
+                <SelectItem value="change" className="text-xs">
+                  Daily change
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -172,19 +206,36 @@ function Scanner() {
             <table className="w-full min-w-[64rem] text-xs">
               <thead>
                 <tr className="border-b border-border text-left">
-                  {["Asset", "Price", "Change", "AI", "Bias", "Regime", "Strategy", "Prob.", "R", "Risk", "Session", "Signal", ""].map(
-                    (h) => (
-                      <th key={h} className="label-xs px-3 py-2 font-medium whitespace-nowrap">
-                        {h}
-                      </th>
-                    ),
-                  )}
+                  {[
+                    "Asset",
+                    "Price",
+                    "Change",
+                    "AI",
+                    "Bias",
+                    "Regime",
+                    "Strategy",
+                    "Prob.",
+                    "R",
+                    "Risk",
+                    "Session",
+                    "Signal",
+                    "",
+                  ].map((h) => (
+                    <th key={h} className="label-xs px-3 py-2 font-medium whitespace-nowrap">
+                      {h}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
                 {rows.map(({ quote, signal }) => (
-                  <tr key={quote.symbol} className="border-b border-border/60 last:border-0 hover:bg-accent/40">
-                    <td className="num px-3 py-2.5 font-semibold whitespace-nowrap">{quote.symbol}</td>
+                  <tr
+                    key={quote.symbol}
+                    className="border-b border-border/60 last:border-0 hover:bg-accent/40"
+                  >
+                    <td className="num px-3 py-2.5 font-semibold whitespace-nowrap">
+                      {quote.symbol}
+                    </td>
                     <td className="num px-3 py-2.5">{fmtPrice(quote.price, quote.symbol)}</td>
                     <td className="px-3 py-2.5">
                       <ChangeValue pct={quote.changePct} />
@@ -198,13 +249,19 @@ function Scanner() {
                     <td className="px-3 py-2.5">
                       <RegimeBadge regime={quote.regime} />
                     </td>
-                    <td className="px-3 py-2.5 whitespace-nowrap text-muted-foreground">{signal.strategy}</td>
+                    <td className="px-3 py-2.5 whitespace-nowrap text-muted-foreground">
+                      {signal.strategy}
+                    </td>
                     <td className="num px-3 py-2.5">{signal.probability}%</td>
-                    <td className="num px-3 py-2.5">{signal.metrics ? `1:${signal.metrics.rr.toFixed(1)}` : "—"}</td>
+                    <td className="num px-3 py-2.5">
+                      {signal.metrics ? `1:${signal.metrics.rr.toFixed(1)}` : "—"}
+                    </td>
                     <td className="px-3 py-2.5">
                       <RiskBadge risk={signal.risk} />
                     </td>
-                    <td className="px-3 py-2.5 whitespace-nowrap text-muted-foreground">{signal.session}</td>
+                    <td className="px-3 py-2.5 whitespace-nowrap text-muted-foreground">
+                      {signal.session}
+                    </td>
                     <td className="px-3 py-2.5">
                       <DirectionBadge direction={signal.direction} />
                     </td>

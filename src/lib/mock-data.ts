@@ -299,22 +299,86 @@ export const NEWS: NewsArticle[] = [
 ];
 
 const REASONING_LIB = [
-  { label: "Higher timeframe bullish structure", weight: 15, detail: "1D and 4H both print higher highs and higher lows; last 4H break of structure confirmed at 3,392.40 with follow-through.", ok: true },
-  { label: "Liquidity sweep detected", weight: 10, detail: "Equal lows at 3,381.10 were swept before the impulse, consistent with stop-run then reversal behaviour.", ok: true },
-  { label: "VWAP reclaimed", weight: 10, detail: "Session VWAP reclaimed and retested as support; price has held above for 6 consecutive candles.", ok: true },
-  { label: "Volume expansion", weight: 10, detail: "Volume on the impulse leg is 1.7x the 20-period average, indicating participation rather than drift.", ok: true },
-  { label: "DXY weakness", weight: 10, detail: "Dollar index down 0.24% on the session with broad-based softness across majors.", ok: true },
-  { label: "US yields declining", weight: 10, detail: "US 10Y real yields at a three-week low, historically supportive for gold.", ok: true },
-  { label: "Momentum positive", weight: 10, detail: "RSI 62 with rising MACD histogram; no bearish divergence detected on 1H or 4H.", ok: true },
-  { label: "Market regime alignment", weight: 15, detail: "Regime model classifies the environment as TRENDING BULL with 91% confidence.", ok: true },
-  { label: "Risk/reward acceptable", weight: 10, detail: "Structural stop placement yields 1:3.2 to the second target.", ok: true },
+  {
+    label: "Higher timeframe bullish structure",
+    weight: 15,
+    detail:
+      "1D and 4H both print higher highs and higher lows; last 4H break of structure confirmed at 3,392.40 with follow-through.",
+    ok: true,
+  },
+  {
+    label: "Liquidity sweep detected",
+    weight: 10,
+    detail:
+      "Equal lows at 3,381.10 were swept before the impulse, consistent with stop-run then reversal behaviour.",
+    ok: true,
+  },
+  {
+    label: "VWAP reclaimed",
+    weight: 10,
+    detail:
+      "Session VWAP reclaimed and retested as support; price has held above for 6 consecutive candles.",
+    ok: true,
+  },
+  {
+    label: "Volume expansion",
+    weight: 10,
+    detail:
+      "Volume on the impulse leg is 1.7x the 20-period average, indicating participation rather than drift.",
+    ok: true,
+  },
+  {
+    label: "DXY weakness",
+    weight: 10,
+    detail: "Dollar index down 0.24% on the session with broad-based softness across majors.",
+    ok: true,
+  },
+  {
+    label: "US yields declining",
+    weight: 10,
+    detail: "US 10Y real yields at a three-week low, historically supportive for gold.",
+    ok: true,
+  },
+  {
+    label: "Momentum positive",
+    weight: 10,
+    detail: "RSI 62 with rising MACD histogram; no bearish divergence detected on 1H or 4H.",
+    ok: true,
+  },
+  {
+    label: "Market regime alignment",
+    weight: 15,
+    detail: "Regime model classifies the environment as TRENDING BULL with 91% confidence.",
+    ok: true,
+  },
+  {
+    label: "Risk/reward acceptable",
+    weight: 10,
+    detail: "Structural stop placement yields 1:3.2 to the second target.",
+    ok: true,
+  },
 ];
 
 function scenarioSet(bull: number, base: number, bear: number, up: string, down: string) {
   return [
-    { scenario: "BULLISH" as const, probability: bull, condition: "Continuation above resistance with sustained volume", target: up },
-    { scenario: "BASE" as const, probability: base, condition: "Range between support and resistance into the event", target: "Rotation" },
-    { scenario: "BEARISH" as const, probability: bear, condition: "Break below demand and loss of VWAP", target: down },
+    {
+      scenario: "BULLISH" as const,
+      probability: bull,
+      condition: "Continuation above resistance with sustained volume",
+      target: up,
+    },
+    {
+      scenario: "BASE" as const,
+      probability: base,
+      condition: "Range between support and resistance into the event",
+      target: "Rotation",
+    },
+    {
+      scenario: "BEARISH" as const,
+      probability: bear,
+      condition: "Break below demand and loss of VWAP",
+      target: down,
+    },
   ];
 }
 
@@ -368,9 +432,33 @@ export function buildAnalysis(symbol: string): MarketAnalysis {
       macd: bullish ? 1.42 : -0.86,
     },
     structure: [
-      { timeframe: "4H", items: [{ label: "HH", ok: true }, { label: "HL", ok: true }, { label: "BOS", ok: true }], note: "Impulsive continuation" },
-      { timeframe: "1H", items: [{ label: "HH", ok: true }, { label: "HL", ok: true }, { label: "BOS", ok: true }], note: "Trend intact" },
-      { timeframe: "15m", items: [{ label: "LH", ok: true }, { label: "LL", ok: true }, { label: "CHOCH", ok: false }], note: "Retracement" },
+      {
+        timeframe: "4H",
+        items: [
+          { label: "HH", ok: true },
+          { label: "HL", ok: true },
+          { label: "BOS", ok: true },
+        ],
+        note: "Impulsive continuation",
+      },
+      {
+        timeframe: "1H",
+        items: [
+          { label: "HH", ok: true },
+          { label: "HL", ok: true },
+          { label: "BOS", ok: true },
+        ],
+        note: "Trend intact",
+      },
+      {
+        timeframe: "15m",
+        items: [
+          { label: "LH", ok: true },
+          { label: "LL", ok: true },
+          { label: "CHOCH", ok: false },
+        ],
+        note: "Retracement",
+      },
     ],
     structureState: bullish ? "BULLISH CONTINUATION" : "BEARISH CONTINUATION",
     liquidity: [
@@ -397,10 +485,28 @@ export function buildAnalysis(symbol: string): MarketAnalysis {
       { name: "US 2Y", value: "4.38%", changePct: -0.9, goldImpact: "BULLISH", weight: 12 },
       { name: "US 10Y", value: "4.11%", changePct: -1.2, goldImpact: "BULLISH", weight: 15 },
       { name: "Real Yields", value: "1.72%", changePct: -2.1, goldImpact: "BULLISH", weight: 18 },
-      { name: "Fed Expectations", value: "2 cuts 2026", changePct: 0.4, goldImpact: "NEUTRAL", weight: 10 },
+      {
+        name: "Fed Expectations",
+        value: "2 cuts 2026",
+        changePct: 0.4,
+        goldImpact: "NEUTRAL",
+        weight: 10,
+      },
       { name: "Inflation", value: "3.2% y/y", changePct: -0.1, goldImpact: "NEUTRAL", weight: 10 },
-      { name: "Risk Sentiment", value: "Risk-On", changePct: 0.8, goldImpact: "BEARISH", weight: 8 },
-      { name: "Geopolitical Risk", value: "Elevated", changePct: 1.6, goldImpact: "BULLISH", weight: 7 },
+      {
+        name: "Risk Sentiment",
+        value: "Risk-On",
+        changePct: 0.8,
+        goldImpact: "BEARISH",
+        weight: 8,
+      },
+      {
+        name: "Geopolitical Risk",
+        value: "Elevated",
+        changePct: 1.6,
+        goldImpact: "BULLISH",
+        weight: 7,
+      },
     ],
     macroScore: 81,
     orderFlow: {
@@ -446,8 +552,18 @@ export function buildAnalysis(symbol: string): MarketAnalysis {
           },
       reasoning,
       risks: noTrade
-        ? ["CPI in 12 minutes", "Resistance nearby", "Order flow conflicting", "Risk/reward only 1.3"]
-        : ["CPI in 42 minutes", "Resistance nearby", "Volatility elevated", "Order flow mixed on 5m"],
+        ? [
+            "CPI in 12 minutes",
+            "Resistance nearby",
+            "Order flow conflicting",
+            "Risk/reward only 1.3",
+          ]
+        : [
+            "CPI in 42 minutes",
+            "Resistance nearby",
+            "Volatility elevated",
+            "Order flow mixed on 5m",
+          ],
       scenarios,
       timeline: [
         { time: "14:21", text: "Bullish structure detected" },
@@ -479,11 +595,72 @@ function fmt(n: number) {
 }
 
 export const STRATEGIES: Strategy[] = [
-  { id: "s1", name: "Gold Trend AI", status: "ACTIVE", winRate: 58.4, profitFactor: 1.94, sharpe: 1.62, maxDrawdown: 11.2, trades: 412, updated: "2h ago", assets: ["XAU/USD"], description: "Higher-timeframe trend continuation with macro confirmation and liquidity-sweep entries." },
-  { id: "s2", name: "London Breakout", status: "ACTIVE", winRate: 47.1, profitFactor: 1.61, sharpe: 1.18, maxDrawdown: 14.8, trades: 688, updated: "1d ago", assets: ["GBP/USD", "EUR/USD"], description: "Asia-range breakout at the London open filtered by volatility regime." },
-  { id: "s3", name: "NY Reversal", status: "PAUSED", winRate: 52.6, profitFactor: 1.43, sharpe: 0.94, maxDrawdown: 17.5, trades: 301, updated: "3d ago", assets: ["EUR/USD", "USD/JPY"], description: "Mean-reversion against exhausted New York session extensions." },
-  { id: "s4", name: "Liquidity Sweep", status: "ACTIVE", winRate: 61.2, profitFactor: 2.11, sharpe: 1.77, maxDrawdown: 9.4, trades: 254, updated: "5h ago", assets: ["XAU/USD", "GBP/USD"], description: "Stop-run detection at equal highs/lows with structure confirmation." },
-  { id: "s5", name: "Macro Momentum", status: "DRAFT", winRate: 44.8, profitFactor: 1.22, sharpe: 0.71, maxDrawdown: 21.3, trades: 96, updated: "1w ago", assets: ["XAU/USD"], description: "Real-yield and DXY factor momentum applied to gold swing horizons." },
+  {
+    id: "s1",
+    name: "Gold Trend AI",
+    status: "ACTIVE",
+    winRate: 58.4,
+    profitFactor: 1.94,
+    sharpe: 1.62,
+    maxDrawdown: 11.2,
+    trades: 412,
+    updated: "2h ago",
+    assets: ["XAU/USD"],
+    description:
+      "Higher-timeframe trend continuation with macro confirmation and liquidity-sweep entries.",
+  },
+  {
+    id: "s2",
+    name: "London Breakout",
+    status: "ACTIVE",
+    winRate: 47.1,
+    profitFactor: 1.61,
+    sharpe: 1.18,
+    maxDrawdown: 14.8,
+    trades: 688,
+    updated: "1d ago",
+    assets: ["GBP/USD", "EUR/USD"],
+    description: "Asia-range breakout at the London open filtered by volatility regime.",
+  },
+  {
+    id: "s3",
+    name: "NY Reversal",
+    status: "PAUSED",
+    winRate: 52.6,
+    profitFactor: 1.43,
+    sharpe: 0.94,
+    maxDrawdown: 17.5,
+    trades: 301,
+    updated: "3d ago",
+    assets: ["EUR/USD", "USD/JPY"],
+    description: "Mean-reversion against exhausted New York session extensions.",
+  },
+  {
+    id: "s4",
+    name: "Liquidity Sweep",
+    status: "ACTIVE",
+    winRate: 61.2,
+    profitFactor: 2.11,
+    sharpe: 1.77,
+    maxDrawdown: 9.4,
+    trades: 254,
+    updated: "5h ago",
+    assets: ["XAU/USD", "GBP/USD"],
+    description: "Stop-run detection at equal highs/lows with structure confirmation.",
+  },
+  {
+    id: "s5",
+    name: "Macro Momentum",
+    status: "DRAFT",
+    winRate: 44.8,
+    profitFactor: 1.22,
+    sharpe: 0.71,
+    maxDrawdown: 21.3,
+    trades: 96,
+    updated: "1w ago",
+    assets: ["XAU/USD"],
+    description: "Real-yield and DXY factor momentum applied to gold swing horizons.",
+  },
 ];
 
 export function buildBacktest(seed = 7): BacktestResult {
@@ -495,9 +672,26 @@ export function buildBacktest(seed = 7): BacktestResult {
     const r = (rnd() - 0.44) * 0.012;
     equity *= 1 + r;
     peak = Math.max(peak, equity);
-    curve.push({ i, equity: Math.round(equity), drawdown: Number((((equity - peak) / peak) * 100).toFixed(2)) });
+    curve.push({
+      i,
+      equity: Math.round(equity),
+      drawdown: Number((((equity - peak) / peak) * 100).toFixed(2)),
+    });
   }
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
   return {
     netReturn: Number((((equity - 100000) / 100000) * 100).toFixed(1)),
     winRate: 57.3,
@@ -509,7 +703,16 @@ export function buildBacktest(seed = 7): BacktestResult {
     trades: 412,
     expectancy: 0.38,
     equity: curve,
-    monthly: months.map((m, i) => ({ month: m, ret: Number(((seeded(i + seed)() - 0.38) * 9).toFixed(2)) })),
+    monthly: (() => {
+      // A single sequential draw per month — reseeding per-iteration with a
+      // small integer collapses to near-identical values, since this LCG's
+      // first draw for small seeds is always close to zero.
+      const monthlyRnd = seeded(seed * 7919 + 101);
+      return months.map((m) => ({
+        month: m,
+        ret: Number(((monthlyRnd() - 0.38) * 9).toFixed(2)),
+      }));
+    })(),
     distribution: [
       { bucket: "-3R", count: 8 },
       { bucket: "-2R", count: 21 },
@@ -544,36 +747,262 @@ export function buildBacktest(seed = 7): BacktestResult {
 }
 
 export const JOURNAL: JournalEntry[] = [
-  { id: "j1", date: "2026-08-07", symbol: "XAU/USD", direction: "LONG", entry: 3382.4, exit: 3411.8, result: "WIN", r: 2.4, aiScore: 88, strategy: "Gold Trend AI", regime: "TRENDING BULL", session: "London/NY Overlap", reason: "4H BOS with liquidity sweep and DXY weakness.", outcome: "Target 2 reached, partial at TP1.", tags: ["A+ setup", "trend"] },
-  { id: "j2", date: "2026-08-06", symbol: "EUR/USD", direction: "SHORT", entry: 1.0921, exit: 1.0938, result: "LOSS", r: -1, aiScore: 71, strategy: "NY Reversal", regime: "RANGE", session: "New York", reason: "Reversal at range high.", outcome: "Stopped on news spike.", tags: ["range", "news"] },
-  { id: "j3", date: "2026-08-05", symbol: "GBP/USD", direction: "LONG", entry: 1.2688, exit: 1.2731, result: "WIN", r: 1.8, aiScore: 82, strategy: "London Breakout", regime: "BREAKOUT", session: "London", reason: "Asia range breakout with volume expansion.", outcome: "Trailed to close.", tags: ["breakout"] },
-  { id: "j4", date: "2026-08-04", symbol: "XAU/USD", direction: "LONG", entry: 3355.1, exit: 3352.0, result: "LOSS", r: -0.6, aiScore: 69, strategy: "Liquidity Sweep", regime: "HIGH VOLATILITY", session: "Asia", reason: "Sweep entry taken below threshold score.", outcome: "Cut early, structure failed.", tags: ["low score", "impatient"] },
-  { id: "j5", date: "2026-08-03", symbol: "USD/JPY", direction: "SHORT", entry: 152.11, exit: 151.42, result: "WIN", r: 1.4, aiScore: 78, strategy: "Macro Momentum", regime: "REVERSAL", session: "New York", reason: "Yield differential compression.", outcome: "Closed at TP1.", tags: ["macro"] },
-  { id: "j6", date: "2026-08-02", symbol: "XAU/USD", direction: "LONG", entry: 3320.5, exit: 3348.9, result: "WIN", r: 3.1, aiScore: 91, strategy: "Gold Trend AI", regime: "TRENDING BULL", session: "London/NY Overlap", reason: "Highest conviction signal of the week.", outcome: "Full target.", tags: ["A+ setup"] },
+  {
+    id: "j1",
+    date: "2026-08-07",
+    symbol: "XAU/USD",
+    direction: "LONG",
+    entry: 3382.4,
+    exit: 3411.8,
+    result: "WIN",
+    r: 2.4,
+    aiScore: 88,
+    strategy: "Gold Trend AI",
+    regime: "TRENDING BULL",
+    session: "London/NY Overlap",
+    reason: "4H BOS with liquidity sweep and DXY weakness.",
+    outcome: "Target 2 reached, partial at TP1.",
+    tags: ["A+ setup", "trend"],
+  },
+  {
+    id: "j2",
+    date: "2026-08-06",
+    symbol: "EUR/USD",
+    direction: "SHORT",
+    entry: 1.0921,
+    exit: 1.0938,
+    result: "LOSS",
+    r: -1,
+    aiScore: 71,
+    strategy: "NY Reversal",
+    regime: "RANGE",
+    session: "New York",
+    reason: "Reversal at range high.",
+    outcome: "Stopped on news spike.",
+    tags: ["range", "news"],
+  },
+  {
+    id: "j3",
+    date: "2026-08-05",
+    symbol: "GBP/USD",
+    direction: "LONG",
+    entry: 1.2688,
+    exit: 1.2731,
+    result: "WIN",
+    r: 1.8,
+    aiScore: 82,
+    strategy: "London Breakout",
+    regime: "BREAKOUT",
+    session: "London",
+    reason: "Asia range breakout with volume expansion.",
+    outcome: "Trailed to close.",
+    tags: ["breakout"],
+  },
+  {
+    id: "j4",
+    date: "2026-08-04",
+    symbol: "XAU/USD",
+    direction: "LONG",
+    entry: 3355.1,
+    exit: 3352.0,
+    result: "LOSS",
+    r: -0.6,
+    aiScore: 69,
+    strategy: "Liquidity Sweep",
+    regime: "HIGH VOLATILITY",
+    session: "Asia",
+    reason: "Sweep entry taken below threshold score.",
+    outcome: "Cut early, structure failed.",
+    tags: ["low score", "impatient"],
+  },
+  {
+    id: "j5",
+    date: "2026-08-03",
+    symbol: "USD/JPY",
+    direction: "SHORT",
+    entry: 152.11,
+    exit: 151.42,
+    result: "WIN",
+    r: 1.4,
+    aiScore: 78,
+    strategy: "Macro Momentum",
+    regime: "REVERSAL",
+    session: "New York",
+    reason: "Yield differential compression.",
+    outcome: "Closed at TP1.",
+    tags: ["macro"],
+  },
+  {
+    id: "j6",
+    date: "2026-08-02",
+    symbol: "XAU/USD",
+    direction: "LONG",
+    entry: 3320.5,
+    exit: 3348.9,
+    result: "WIN",
+    r: 3.1,
+    aiScore: 91,
+    strategy: "Gold Trend AI",
+    regime: "TRENDING BULL",
+    session: "London/NY Overlap",
+    reason: "Highest conviction signal of the week.",
+    outcome: "Full target.",
+    tags: ["A+ setup"],
+  },
 ];
 
 export const ALERTS: Alert[] = [
-  { id: "a1", type: "PRICE", symbol: "XAU/USD", condition: "Price > 3,450.00", active: true, created: "2h ago" },
-  { id: "a2", type: "AI SCORE", symbol: "XAU/USD", condition: "AI Score > 85", active: true, created: "1d ago" },
-  { id: "a3", type: "SIGNAL", symbol: "EUR/USD", condition: "New SHORT setup issued", active: true, created: "3d ago" },
-  { id: "a4", type: "STRUCTURE", symbol: "GBP/USD", condition: "Bullish BOS detected on 1H", active: false, created: "5d ago" },
-  { id: "a5", type: "MACRO", symbol: "XAU/USD", condition: "High-impact CPI released", active: true, created: "1w ago" },
+  {
+    id: "a1",
+    type: "PRICE",
+    symbol: "XAU/USD",
+    condition: "Price > 3,450.00",
+    active: true,
+    created: "2h ago",
+  },
+  {
+    id: "a2",
+    type: "AI SCORE",
+    symbol: "XAU/USD",
+    condition: "AI Score > 85",
+    active: true,
+    created: "1d ago",
+  },
+  {
+    id: "a3",
+    type: "SIGNAL",
+    symbol: "EUR/USD",
+    condition: "New SHORT setup issued",
+    active: true,
+    created: "3d ago",
+  },
+  {
+    id: "a4",
+    type: "STRUCTURE",
+    symbol: "GBP/USD",
+    condition: "Bullish BOS detected on 1H",
+    active: false,
+    created: "5d ago",
+  },
+  {
+    id: "a5",
+    type: "MACRO",
+    symbol: "XAU/USD",
+    condition: "High-impact CPI released",
+    active: true,
+    created: "1w ago",
+  },
 ];
 
 export const MODELS: ModelMetrics[] = [
-  { name: "Market Regime Model", version: "v3.2.1", accuracy: 0.83, precision: 0.81, recall: 0.79, auc: 0.89, calibration: 0.94, oos: 0.78, lastTrained: "2026-08-04", status: "HEALTHY", drift: "NONE" },
-  { name: "Direction Model", version: "v5.0.4", accuracy: 0.64, precision: 0.66, recall: 0.61, auc: 0.71, calibration: 0.88, oos: 0.6, lastTrained: "2026-08-06", status: "MONITORING", drift: "LOW" },
-  { name: "Volatility Model", version: "v2.7.0", accuracy: 0.77, precision: 0.75, recall: 0.74, auc: 0.84, calibration: 0.91, oos: 0.73, lastTrained: "2026-07-29", status: "HEALTHY", drift: "NONE" },
-  { name: "Trade Probability Model", version: "v4.1.2", accuracy: 0.69, precision: 0.72, recall: 0.63, auc: 0.76, calibration: 0.86, oos: 0.65, lastTrained: "2026-08-07", status: "MONITORING", drift: "MODERATE" },
-  { name: "Signal Fusion Model", version: "v1.9.8", accuracy: 0.71, precision: 0.74, recall: 0.68, auc: 0.8, calibration: 0.9, oos: 0.69, lastTrained: "2026-08-08", status: "RETRAINING", drift: "LOW" },
+  {
+    name: "Market Regime Model",
+    version: "v3.2.1",
+    accuracy: 0.83,
+    precision: 0.81,
+    recall: 0.79,
+    auc: 0.89,
+    calibration: 0.94,
+    oos: 0.78,
+    lastTrained: "2026-08-04",
+    status: "HEALTHY",
+    drift: "NONE",
+  },
+  {
+    name: "Direction Model",
+    version: "v5.0.4",
+    accuracy: 0.64,
+    precision: 0.66,
+    recall: 0.61,
+    auc: 0.71,
+    calibration: 0.88,
+    oos: 0.6,
+    lastTrained: "2026-08-06",
+    status: "MONITORING",
+    drift: "LOW",
+  },
+  {
+    name: "Volatility Model",
+    version: "v2.7.0",
+    accuracy: 0.77,
+    precision: 0.75,
+    recall: 0.74,
+    auc: 0.84,
+    calibration: 0.91,
+    oos: 0.73,
+    lastTrained: "2026-07-29",
+    status: "HEALTHY",
+    drift: "NONE",
+  },
+  {
+    name: "Trade Probability Model",
+    version: "v4.1.2",
+    accuracy: 0.69,
+    precision: 0.72,
+    recall: 0.63,
+    auc: 0.76,
+    calibration: 0.86,
+    oos: 0.65,
+    lastTrained: "2026-08-07",
+    status: "MONITORING",
+    drift: "MODERATE",
+  },
+  {
+    name: "Signal Fusion Model",
+    version: "v1.9.8",
+    accuracy: 0.71,
+    precision: 0.74,
+    recall: 0.68,
+    auc: 0.8,
+    calibration: 0.9,
+    oos: 0.69,
+    lastTrained: "2026-08-08",
+    status: "RETRAINING",
+    drift: "LOW",
+  },
 ];
 
 export const NOTIFICATIONS: NotificationItem[] = [
-  { id: "nt1", kind: "signal", title: "New XAU/USD LONG setup", detail: "AI score 89 · Trend Following · 1:3.2", time: "6m ago", unread: true },
-  { id: "nt2", kind: "macro", title: "US CPI in 42 minutes", detail: "Critical impact · affects 4 tracked assets", time: "12m ago", unread: true },
-  { id: "nt3", kind: "risk", title: "Correlated USD exposure detected", detail: "EUR/USD and GBP/USD share a high USD factor loading", time: "38m ago", unread: true },
-  { id: "nt4", kind: "invalidated", title: "AUD/USD setup invalidated", detail: "Structure failed below the last higher low", time: "1h ago", unread: false },
-  { id: "nt5", kind: "model", title: "Signal Fusion Model retraining", detail: "v1.9.8 → v2.0.0 scheduled", time: "3h ago", unread: false },
+  {
+    id: "nt1",
+    kind: "signal",
+    title: "New XAU/USD LONG setup",
+    detail: "AI score 89 · Trend Following · 1:3.2",
+    time: "6m ago",
+    unread: true,
+  },
+  {
+    id: "nt2",
+    kind: "macro",
+    title: "US CPI in 42 minutes",
+    detail: "Critical impact · affects 4 tracked assets",
+    time: "12m ago",
+    unread: true,
+  },
+  {
+    id: "nt3",
+    kind: "risk",
+    title: "Correlated USD exposure detected",
+    detail: "EUR/USD and GBP/USD share a high USD factor loading",
+    time: "38m ago",
+    unread: true,
+  },
+  {
+    id: "nt4",
+    kind: "invalidated",
+    title: "AUD/USD setup invalidated",
+    detail: "Structure failed below the last higher low",
+    time: "1h ago",
+    unread: false,
+  },
+  {
+    id: "nt5",
+    kind: "model",
+    title: "Signal Fusion Model retraining",
+    detail: "v1.9.8 → v2.0.0 scheduled",
+    time: "3h ago",
+    unread: false,
+  },
 ];
 
 export const WATCHLISTS = [

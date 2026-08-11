@@ -64,7 +64,9 @@ export function Panel({
             >
               {title}
             </h2>
-            {subtitle && <p className="mt-0.5 truncate text-xs text-muted-foreground">{subtitle}</p>}
+            {subtitle && (
+              <p className="mt-0.5 truncate text-xs text-muted-foreground">{subtitle}</p>
+            )}
           </div>
           {actions && <div className="flex shrink-0 items-center gap-2">{actions}</div>}
         </header>
@@ -129,7 +131,13 @@ export function BiasBadge({ bias, className }: { bias: Bias; className?: string 
   );
 }
 
-export function DirectionBadge({ direction, className }: { direction: Direction; className?: string | undefined }) {
+export function DirectionBadge({
+  direction,
+  className,
+}: {
+  direction: Direction;
+  className?: string | undefined;
+}) {
   const tone: Tone = direction === "LONG" ? "bull" : direction === "SHORT" ? "bear" : "warn";
   return (
     <Chip tone={tone} className={className}>
@@ -138,7 +146,13 @@ export function DirectionBadge({ direction, className }: { direction: Direction;
   );
 }
 
-export function RegimeBadge({ regime, className }: { regime: Regime; className?: string | undefined }) {
+export function RegimeBadge({
+  regime,
+  className,
+}: {
+  regime: Regime;
+  className?: string | undefined;
+}) {
   const tone: Tone = regime.includes("BULL")
     ? "bull"
     : regime.includes("BEAR")
@@ -160,13 +174,21 @@ export function RiskBadge({ risk }: { risk: RiskLevel }) {
 
 export function ImportanceBadge({ importance }: { importance: Importance }) {
   const tone: Tone =
-    importance === "CRITICAL" ? "bear" : importance === "HIGH" ? "warn" : importance === "MEDIUM" ? "ai" : "neutral";
+    importance === "CRITICAL"
+      ? "bear"
+      : importance === "HIGH"
+        ? "warn"
+        : importance === "MEDIUM"
+          ? "ai"
+          : "neutral";
   return <Chip tone={tone}>{importance}</Chip>;
 }
 
 export function ChangeValue({ pct, className }: { pct: number; className?: string | undefined }) {
   return (
-    <span className={cn("num text-sm font-semibold", pct >= 0 ? "text-bull" : "text-bear", className)}>
+    <span
+      className={cn("num text-sm font-semibold", pct >= 0 ? "text-bull" : "text-bear", className)}
+    >
       {fmtPct(pct)}
     </span>
   );
@@ -217,7 +239,10 @@ export function AIConfluenceScore({
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className={cn("num font-semibold", toneText[tone])} style={{ fontSize: size * 0.28 }}>
+          <span
+            className={cn("num font-semibold", toneText[tone])}
+            style={{ fontSize: size * 0.28 }}
+          >
             {score}
           </span>
           <span className="text-[0.5625rem] tracking-widest text-muted-foreground">/100</span>
@@ -243,7 +268,9 @@ export function ScoreBar({ score, className }: { score: number; className?: stri
       <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
         <div className={cn("h-full rounded-full", toneBg[tone])} style={{ width: `${score}%` }} />
       </div>
-      <span className={cn("num w-8 shrink-0 text-right text-xs font-semibold", toneText[tone])}>{score}</span>
+      <span className={cn("num w-8 shrink-0 text-right text-xs font-semibold", toneText[tone])}>
+        {score}
+      </span>
     </div>
   );
 }
@@ -268,7 +295,9 @@ export function ProbabilityBar({
       <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-muted">
         <div className={cn("h-full rounded-full", toneBg[tone])} style={{ width: `${value}%` }} />
       </div>
-      {sublabel && <p className="mt-1 text-[0.6875rem] leading-snug text-muted-foreground">{sublabel}</p>}
+      {sublabel && (
+        <p className="mt-1 text-[0.6875rem] leading-snug text-muted-foreground">{sublabel}</p>
+      )}
     </div>
   );
 }
@@ -291,7 +320,10 @@ export function Sparkline({
   const max = Math.max(...data);
   const span = max - min || 1;
   const pts = data
-    .map((d, i) => `${(i / (data.length - 1)) * width},${height - ((d - min) / span) * (height - 4) - 2}`)
+    .map(
+      (d, i) =>
+        `${(i / (data.length - 1)) * width},${height - ((d - min) / span) * (height - 4) - 2}`,
+    )
     .join(" ");
   return (
     <svg width={width} height={height} className="overflow-visible">
@@ -313,7 +345,13 @@ export function Sparkline({
 
 /* --------------------------------------------------------- Data states */
 
-export function LoadingPanel({ rows = 4, className }: { rows?: number | undefined; className?: string | undefined }) {
+export function LoadingPanel({
+  rows = 4,
+  className,
+}: {
+  rows?: number | undefined;
+  className?: string | undefined;
+}) {
   return (
     <div className={cn("space-y-2", className)}>
       {Array.from({ length: rows }).map((_, i) => (
@@ -323,7 +361,13 @@ export function LoadingPanel({ rows = 4, className }: { rows?: number | undefine
   );
 }
 
-export function ErrorState({ onRetry, message }: { onRetry?: (() => void) | undefined; message?: string | undefined }) {
+export function ErrorState({
+  onRetry,
+  message,
+}: {
+  onRetry?: (() => void) | undefined;
+  message?: string | undefined;
+}) {
   return (
     <div className="flex flex-col items-center justify-center gap-3 py-8 text-center">
       <AlertTriangle className="size-5 text-bear" />
@@ -339,7 +383,15 @@ export function ErrorState({ onRetry, message }: { onRetry?: (() => void) | unde
   );
 }
 
-export function EmptyState({ title, hint, action }: { title: string; hint?: string | undefined; action?: ReactNode }) {
+export function EmptyState({
+  title,
+  hint,
+  action,
+}: {
+  title: string;
+  hint?: string | undefined;
+  action?: ReactNode;
+}) {
   return (
     <div className="flex flex-col items-center justify-center gap-2 py-10 text-center">
       <Inbox className="size-5 text-muted-foreground" />
@@ -391,7 +443,9 @@ export function CheckRow({
         onClick={onClick}
         className="flex w-full items-start gap-2 rounded px-1.5 py-1.5 text-left transition-colors hover:bg-accent/60"
       >
-        <span className={cn("num mt-px shrink-0 text-xs font-bold", ok ? "text-bull" : "text-bear")}>
+        <span
+          className={cn("num mt-px shrink-0 text-xs font-bold", ok ? "text-bull" : "text-bear")}
+        >
           {ok ? "✓" : "✗"}
         </span>
         <span className="min-w-0 flex-1 text-xs leading-snug text-foreground">{children}</span>

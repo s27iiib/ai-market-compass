@@ -178,7 +178,9 @@ export function CandlestickChart({
       Math.min(candles.length, Math.max(25, v.count * Math.exp(dy * 0.0018))),
     );
     const anchorIndex = v.start + anchorRatio * v.count;
-    const start = Math.round(Math.min(candles.length - next, Math.max(0, anchorIndex - anchorRatio * next)));
+    const start = Math.round(
+      Math.min(candles.length - next, Math.max(0, anchorIndex - anchorRatio * next)),
+    );
     setView({ start, count: next });
   };
 
@@ -204,7 +206,10 @@ export function CandlestickChart({
     setHover({ x: px, y: e.clientY - rect.top, i });
     if (dragRef.current) {
       const shift = Math.round((dragRef.current.x - e.clientX) / bw);
-      const start = Math.min(candles.length - view.count, Math.max(0, dragRef.current.start + shift));
+      const start = Math.min(
+        candles.length - view.count,
+        Math.max(0, dragRef.current.start + shift),
+      );
       if (start !== view.start) setView((v) => ({ ...v, start }));
     }
   };
@@ -248,7 +253,14 @@ export function CandlestickChart({
           const price = max - ((max - min) / 5) * i;
           return (
             <g key={i}>
-              <line x1={PAD.left} x2={PAD.left + plotW} y1={yy} y2={yy} className="stroke-border" strokeWidth={1} />
+              <line
+                x1={PAD.left}
+                x2={PAD.left + plotW}
+                y1={yy}
+                y2={yy}
+                className="stroke-border"
+                strokeWidth={1}
+              />
               <text
                 x={PAD.left + plotW + 6}
                 y={yy + 3.5}
@@ -347,7 +359,10 @@ export function CandlestickChart({
                 <text
                   x={PAD.left + 4}
                   y={y(l.p) - 4}
-                  className={cn("text-[9px] tracking-wider", l.label === "SL" ? "fill-bear" : "fill-bull")}
+                  className={cn(
+                    "text-[9px] tracking-wider",
+                    l.label === "SL" ? "fill-bear" : "fill-bull",
+                  )}
                 >
                   {l.label} {fmtPrice(l.p, symbol)}
                 </text>
@@ -382,7 +397,12 @@ export function CandlestickChart({
           return (
             <g key={c.t} className={up ? "fill-bull stroke-bull" : "fill-bear stroke-bear"}>
               <line x1={x(i)} x2={x(i)} y1={y(c.h)} y2={y(c.l)} strokeWidth={1} />
-              <rect x={x(i) - Math.max(1, bw * 0.32)} width={Math.max(1.5, bw * 0.64)} y={bodyTop} height={bodyH} />
+              <rect
+                x={x(i) - Math.max(1, bw * 0.32)}
+                width={Math.max(1.5, bw * 0.64)}
+                y={bodyTop}
+                height={bodyH}
+              />
             </g>
           );
         })}
@@ -394,9 +414,17 @@ export function CandlestickChart({
             <path d={line(ema50)} className="stroke-warn/80" fill="none" strokeWidth={1.2} />
           </>
         )}
-        {overlays.sma && <path d={line(sma100)} className="stroke-foreground/60" fill="none" strokeWidth={1.2} />}
+        {overlays.sma && (
+          <path d={line(sma100)} className="stroke-foreground/60" fill="none" strokeWidth={1.2} />
+        )}
         {overlays.vwap && (
-          <path d={line(vwap)} className="stroke-foreground/70" fill="none" strokeWidth={1.2} strokeDasharray="5 3" />
+          <path
+            d={line(vwap)}
+            className="stroke-foreground/70"
+            fill="none"
+            strokeWidth={1.2}
+            strokeDasharray="5 3"
+          />
         )}
 
         {/* structure labels */}
@@ -407,7 +435,10 @@ export function CandlestickChart({
               x={x(s.i)}
               y={s.up ? y(visible[s.i]!.h) - 6 : y(visible[s.i]!.l) + 12}
               textAnchor="middle"
-              className={cn("text-[9px] font-semibold", s.label === "BOS" ? "fill-ai" : "fill-muted-foreground")}
+              className={cn(
+                "text-[9px] font-semibold",
+                s.label === "BOS" ? "fill-ai" : "fill-muted-foreground",
+              )}
             >
               {s.label}
             </text>

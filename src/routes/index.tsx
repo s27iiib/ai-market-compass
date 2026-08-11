@@ -22,7 +22,8 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Market Overview — Aurum AI Trading Intelligence" },
       {
         property: "og:description",
-        content: "AI confluence scores, ranked opportunities, currency strength and macro risk for XAU/USD and FX majors.",
+        content:
+          "AI confluence scores, ranked opportunities, currency strength and macro risk for XAU/USD and FX majors.",
       },
     ],
   }),
@@ -51,7 +52,12 @@ function Dashboard() {
       <div className="grid gap-3 lg:grid-cols-4">
         <StatTile label="Market regime" value="RISK-ON" tone="bull" hint="Cross-asset composite" />
         <StatTile label="Session" value="London" hint="New York opens in 2h 18m" />
-        <StatTile label="Qualifying setups" value="3 of 8" tone="ai" hint="Above platform threshold" />
+        <StatTile
+          label="Qualifying setups"
+          value="3 of 8"
+          tone="ai"
+          hint="Above platform threshold"
+        />
         <StatTile label="Event risk" value="US CPI in 42m" tone="warn" hint="Critical impact" />
       </div>
 
@@ -71,9 +77,10 @@ function Dashboard() {
 
       <Panel title="Data disclosure" dense>
         <p className="px-4 py-3 text-[0.6875rem] leading-relaxed text-muted-foreground">
-          All prices, scores, probabilities and analytics shown are generated from a simulated dataset for interface
-          demonstration. Nothing here is real-time market data, investment advice, or a guarantee of outcome. AI output
-          expresses model estimates and scenario probabilities, with explicit invalidation conditions.
+          All prices, scores, probabilities and analytics shown are generated from a simulated
+          dataset for interface demonstration. Nothing here is real-time market data, investment
+          advice, or a guarantee of outcome. AI output expresses model estimates and scenario
+          probabilities, with explicit invalidation conditions.
         </p>
       </Panel>
     </div>

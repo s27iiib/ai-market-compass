@@ -1,5 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import { Bell, BrainCircuit, CalendarClock, CircleAlert, Gauge, ShieldAlert, TrendingUp, XCircle } from "lucide-react";
+import {
+  Bell,
+  BrainCircuit,
+  CalendarClock,
+  CircleAlert,
+  Gauge,
+  ShieldAlert,
+  TrendingUp,
+  XCircle,
+} from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { notificationService } from "@/services";
@@ -64,7 +73,9 @@ export function NotificationBell() {
                       <p className="truncate text-xs font-medium">{n.title}</p>
                       {n.unread && <span className="size-1.5 shrink-0 rounded-full bg-ai" />}
                     </div>
-                    <p className="mt-0.5 text-[0.6875rem] leading-snug text-muted-foreground">{n.detail}</p>
+                    <p className="mt-0.5 text-[0.6875rem] leading-snug text-muted-foreground">
+                      {n.detail}
+                    </p>
                     <p className="mt-1 text-[0.625rem] text-muted-foreground">{n.time}</p>
                   </div>
                 </div>

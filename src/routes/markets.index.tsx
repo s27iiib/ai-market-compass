@@ -1,6 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Panel, ErrorState, LoadingPanel, BiasBadge, RegimeBadge, ScoreBar, ChangeValue, DirectionBadge, Chip } from "@/components/terminal/primitives";
+import {
+  Panel,
+  ErrorState,
+  LoadingPanel,
+  BiasBadge,
+  RegimeBadge,
+  ScoreBar,
+  ChangeValue,
+  DirectionBadge,
+  Chip,
+} from "@/components/terminal/primitives";
 import { PageHeader } from "@/components/terminal/app-shell";
 import { marketService } from "@/services";
 import { symbolToSlug, WATCHLISTS } from "@/lib/mock-data";
@@ -13,17 +23,24 @@ export const Route = createFileRoute("/markets/")({
       { title: "Markets — Aurum AI Trading Intelligence" },
       {
         name: "description",
-        content: "All tracked instruments with AI confluence scores, bias, regime classification and watchlists.",
+        content:
+          "All tracked instruments with AI confluence scores, bias, regime classification and watchlists.",
       },
       { property: "og:title", content: "Markets — Aurum AI Trading Intelligence" },
-      { property: "og:description", content: "Gold and FX majors with AI confluence scoring and regime classification." },
+      {
+        property: "og:description",
+        content: "Gold and FX majors with AI confluence scoring and regime classification.",
+      },
     ],
   }),
   component: Markets,
 });
 
 function Markets() {
-  const { data, isLoading, isError, refetch } = useQuery({ queryKey: ["markets"], queryFn: marketService.getMarkets });
+  const { data, isLoading, isError, refetch } = useQuery({
+    queryKey: ["markets"],
+    queryFn: marketService.getMarkets,
+  });
 
   return (
     <div className="mx-auto max-w-[130rem] space-y-4 p-3 sm:p-4 xl:p-6">
@@ -44,7 +61,18 @@ function Markets() {
               <table className="w-full min-w-[52rem] text-xs">
                 <thead>
                   <tr className="border-b border-border text-left">
-                    {["Asset", "Price", "Change", "Bid / Ask", "Spread", "AI", "Bias", "Regime", "Setup", ""].map((h) => (
+                    {[
+                      "Asset",
+                      "Price",
+                      "Change",
+                      "Bid / Ask",
+                      "Spread",
+                      "AI",
+                      "Bias",
+                      "Regime",
+                      "Setup",
+                      "",
+                    ].map((h) => (
                       <th key={h} className="label-xs px-4 py-2 font-medium whitespace-nowrap">
                         {h}
                       </th>
@@ -53,8 +81,13 @@ function Markets() {
                 </thead>
                 <tbody>
                   {data.map((q) => (
-                    <tr key={q.symbol} className="border-b border-border/60 last:border-0 hover:bg-accent/40">
-                      <td className="num px-4 py-2.5 font-semibold whitespace-nowrap">{q.symbol}</td>
+                    <tr
+                      key={q.symbol}
+                      className="border-b border-border/60 last:border-0 hover:bg-accent/40"
+                    >
+                      <td className="num px-4 py-2.5 font-semibold whitespace-nowrap">
+                        {q.symbol}
+                      </td>
                       <td className="num px-4 py-2.5">{fmtPrice(q.price, q.symbol)}</td>
                       <td className="px-4 py-2.5">
                         <ChangeValue pct={q.changePct} />
@@ -62,7 +95,9 @@ function Markets() {
                       <td className="num px-4 py-2.5 whitespace-nowrap text-muted-foreground">
                         {fmtPrice(q.bid, q.symbol)} / {fmtPrice(q.ask, q.symbol)}
                       </td>
-                      <td className="num px-4 py-2.5 text-muted-foreground">{q.spread.toFixed(2)}</td>
+                      <td className="num px-4 py-2.5 text-muted-foreground">
+                        {q.spread.toFixed(2)}
+                      </td>
                       <td className="w-28 px-4 py-2.5">
                         <ScoreBar score={q.aiScore} />
                       </td>
@@ -72,7 +107,13 @@ function Markets() {
                       <td className="px-4 py-2.5">
                         <RegimeBadge regime={q.regime} />
                       </td>
-                      <td className="px-4 py-2.5">{q.setup ? <DirectionBadge direction={q.setup} /> : <span className="text-muted-foreground">—</span>}</td>
+                      <td className="px-4 py-2.5">
+                        {q.setup ? (
+                          <DirectionBadge direction={q.setup} />
+                        ) : (
+                          <span className="text-muted-foreground">—</span>
+                        )}
+                      </td>
                       <td className="px-4 py-2.5 text-right">
                         <Button asChild size="sm" variant="outline">
                           <Link to="/markets/$symbol" params={{ symbol: symbolToSlug(q.symbol) }}>

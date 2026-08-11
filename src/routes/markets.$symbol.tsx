@@ -18,7 +18,11 @@ import {
   ScoreBar,
   StatTile,
 } from "@/components/terminal/primitives";
-import { CandlestickChart, DEFAULT_OVERLAYS, type ChartOverlays } from "@/components/terminal/candlestick-chart";
+import {
+  CandlestickChart,
+  DEFAULT_OVERLAYS,
+  type ChartOverlays,
+} from "@/components/terminal/candlestick-chart";
 import {
   AIIntelligencePanel,
   ForecastTab,
@@ -61,7 +65,9 @@ export const Route = createFileRoute("/markets/$symbol")({
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
-      return { meta: [{ title: "Instrument unavailable — Aurum" }, { name: "robots", content: "noindex" }] };
+      return {
+        meta: [{ title: "Instrument unavailable — Aurum" }, { name: "robots", content: "noindex" }],
+      };
     }
     const t = `${loaderData.symbol} Workspace — Aurum AI Trading Intelligence`;
     const d = `AI market intelligence for ${loaderData.symbol}: confluence score, structure, liquidity, macro context, scenario probabilities and risk.`;
@@ -83,9 +89,18 @@ function Workspace() {
   const [tf, setTf] = useState<Timeframe>("1H");
   const [overlays, setOverlays] = useState<ChartOverlays>(DEFAULT_OVERLAYS);
 
-  const quote = useQuery({ queryKey: ["market", symbol], queryFn: () => marketService.getMarket(symbol) });
-  const candles = useQuery({ queryKey: ["candles", symbol, tf], queryFn: () => marketService.getCandles(symbol, tf) });
-  const analysis = useQuery({ queryKey: ["analysis", symbol], queryFn: () => marketService.getAnalysis(symbol) });
+  const quote = useQuery({
+    queryKey: ["market", symbol],
+    queryFn: () => marketService.getMarket(symbol),
+  });
+  const candles = useQuery({
+    queryKey: ["candles", symbol, tf],
+    queryFn: () => marketService.getCandles(symbol, tf),
+  });
+  const analysis = useQuery({
+    queryKey: ["analysis", symbol],
+    queryFn: () => marketService.getAnalysis(symbol),
+  });
 
   const a = analysis.data;
   const levels = a
@@ -119,7 +134,9 @@ function Workspace() {
             </div>
             {quote.data ? (
               <div className="mt-2 flex flex-wrap items-end gap-x-5 gap-y-2">
-                <span className="num text-2xl font-semibold">{fmtPrice(quote.data.price, symbol)}</span>
+                <span className="num text-2xl font-semibold">
+                  {fmtPrice(quote.data.price, symbol)}
+                </span>
                 <ChangeValue pct={quote.data.changePct} className="text-base" />
                 <div className="num flex flex-wrap gap-x-4 text-[0.6875rem] text-muted-foreground">
                   <span>Bid {fmtPrice(quote.data.bid, symbol)}</span>
@@ -142,7 +159,11 @@ function Workspace() {
                 <div className="label-xs mb-1">AI confluence</div>
                 <ScoreBar score={a.aiScore} />
               </div>
-              <Button size="sm" variant="outline" onClick={() => toast.success(`Alert created for ${symbol}`)}>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => toast.success(`Alert created for ${symbol}`)}
+              >
                 <Bell className="size-3.5" /> Alert
               </Button>
             </div>
@@ -165,7 +186,9 @@ function Workspace() {
                     type="button"
                     onClick={() => setTf(t)}
                     className={`num rounded px-1.5 py-1 text-[0.6875rem] transition-colors ${
-                      tf === t ? "bg-ai text-ai-foreground font-semibold" : "text-muted-foreground hover:bg-accent"
+                      tf === t
+                        ? "bg-ai text-ai-foreground font-semibold"
+                        : "text-muted-foreground hover:bg-accent"
                     }`}
                   >
                     {t}
@@ -194,7 +217,13 @@ function Workspace() {
             ) : candles.isError ? (
               <ErrorState onRetry={() => candles.refetch()} />
             ) : (
-              <CandlestickChart candles={candles.data} symbol={symbol} levels={levels} overlays={overlays} height={470} />
+              <CandlestickChart
+                candles={candles.data}
+                symbol={symbol}
+                levels={levels}
+                overlays={overlays}
+                height={470}
+              />
             )}
             {a && (
               <div className="grid grid-cols-3 gap-2 border-t border-border p-3">
@@ -203,7 +232,9 @@ function Workspace() {
                     key={s.scenario}
                     label={s.scenario === "BASE" ? "Neutral (next 4h)" : `${s.scenario} (next 4h)`}
                     value={`${s.probability}%`}
-                    tone={s.scenario === "BULLISH" ? "bull" : s.scenario === "BEARISH" ? "bear" : "warn"}
+                    tone={
+                      s.scenario === "BULLISH" ? "bull" : s.scenario === "BEARISH" ? "bear" : "warn"
+                    }
                   />
                 ))}
               </div>
@@ -218,17 +249,25 @@ function Workspace() {
           ) : (
             <Tabs defaultValue="overview">
               <TabsList className="flex w-full flex-wrap justify-start gap-1 bg-transparent p-0">
-                {["overview", "technical", "structure", "macro", "orderflow", "sentiment", "news", "forecast", "risk"].map(
-                  (t) => (
-                    <TabsTrigger
-                      key={t}
-                      value={t}
-                      className="rounded-md border border-border bg-card px-3 py-1.5 text-xs capitalize data-[state=active]:border-ai/40 data-[state=active]:bg-ai/12 data-[state=active]:text-ai"
-                    >
-                      {t === "orderflow" ? "Order Flow" : t === "forecast" ? "AI Forecast" : t}
-                    </TabsTrigger>
-                  ),
-                )}
+                {[
+                  "overview",
+                  "technical",
+                  "structure",
+                  "macro",
+                  "orderflow",
+                  "sentiment",
+                  "news",
+                  "forecast",
+                  "risk",
+                ].map((t) => (
+                  <TabsTrigger
+                    key={t}
+                    value={t}
+                    className="rounded-md border border-border bg-card px-3 py-1.5 text-xs capitalize data-[state=active]:border-ai/40 data-[state=active]:bg-ai/12 data-[state=active]:text-ai"
+                  >
+                    {t === "orderflow" ? "Order Flow" : t === "forecast" ? "AI Forecast" : t}
+                  </TabsTrigger>
+                ))}
               </TabsList>
 
               <TabsContent value="overview" className="mt-3 space-y-3">
@@ -259,17 +298,19 @@ function Workspace() {
               <TabsContent value="news" className="mt-3">
                 <Panel title="Instrument News" dense>
                   <ul className="divide-y divide-border">
-                    {["Fed signals higher-for-longer rate environment", "US 10Y real yields slip to three-week low", "Dollar index drifts lower ahead of inflation data"].map(
-                      (h) => (
-                        <li key={h} className="px-4 py-3 text-xs">
-                          <p className="font-medium">{h}</p>
-                          <div className="mt-1 flex gap-2">
-                            <Chip tone="ai">{symbol}</Chip>
-                            <Chip tone="warn">High impact</Chip>
-                          </div>
-                        </li>
-                      ),
-                    )}
+                    {[
+                      "Fed signals higher-for-longer rate environment",
+                      "US 10Y real yields slip to three-week low",
+                      "Dollar index drifts lower ahead of inflation data",
+                    ].map((h) => (
+                      <li key={h} className="px-4 py-3 text-xs">
+                        <p className="font-medium">{h}</p>
+                        <div className="mt-1 flex gap-2">
+                          <Chip tone="ai">{symbol}</Chip>
+                          <Chip tone="warn">High impact</Chip>
+                        </div>
+                      </li>
+                    ))}
                   </ul>
                 </Panel>
               </TabsContent>

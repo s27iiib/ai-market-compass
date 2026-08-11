@@ -65,7 +65,9 @@ export function AIIntelligencePanel({ analysis }: { analysis: MarketAnalysis }) 
               key={sc.scenario}
               label={sc.scenario === "BASE" ? "RANGE" : sc.scenario === "BULLISH" ? "UP" : "DOWN"}
               value={sc.probability}
-              tone={sc.scenario === "BULLISH" ? "bull" : sc.scenario === "BEARISH" ? "bear" : "warn"}
+              tone={
+                sc.scenario === "BULLISH" ? "bull" : sc.scenario === "BEARISH" ? "bear" : "warn"
+              }
             />
           ))}
         </div>
@@ -83,7 +85,9 @@ export function AIIntelligencePanel({ analysis }: { analysis: MarketAnalysis }) 
             >
               <span className="flex items-baseline justify-between gap-2">
                 <span>{r.label}</span>
-                <span className="num shrink-0 text-[0.625rem] text-muted-foreground">{r.weight}%</span>
+                <span className="num shrink-0 text-[0.625rem] text-muted-foreground">
+                  {r.weight}%
+                </span>
               </span>
             </CheckRow>
           ))}
@@ -175,22 +179,34 @@ export function SignalCard({ analysis }: { analysis: MarketAnalysis }) {
       </div>
 
       <div className="mt-3 flex flex-wrap gap-2">
-        <Button size="sm" onClick={() => toast.info("Trade analysis opened", { description: "Full breakdown in the Risk tab." })}>
+        <Button
+          size="sm"
+          onClick={() =>
+            toast.info("Trade analysis opened", { description: "Full breakdown in the Risk tab." })
+          }
+        >
           <BrainCircuit className="size-3.5" /> Analyse trade
         </Button>
         <Button
           size="sm"
           variant="outline"
-          onClick={() => toast.success("Alert created", { description: `${s.symbol} · AI score > ${s.aiScore}` })}
+          onClick={() =>
+            toast.success("Alert created", { description: `${s.symbol} · AI score > ${s.aiScore}` })
+          }
         >
           <Bell className="size-3.5" /> Set alert
         </Button>
-        <Button size="sm" variant="ghost" onClick={() => toast.success(`${s.symbol} added to watchlist`)}>
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => toast.success(`${s.symbol} added to watchlist`)}
+        >
           <Star className="size-3.5" /> Watchlist
         </Button>
       </div>
       <p className="mt-3 text-[0.625rem] leading-relaxed text-muted-foreground">
-        Decision-support output only. No broker execution is connected. Figures are derived from simulated demo data.
+        Decision-support output only. No broker execution is connected. Figures are derived from
+        simulated demo data.
       </p>
     </Panel>
   );
@@ -208,12 +224,25 @@ export function DecisionTimeline({ analysis }: { analysis: MarketAnalysis }) {
             <span
               className={cn(
                 "z-10 mt-1 size-2 shrink-0 rounded-full ring-4 ring-card",
-                t.kind === "signal" ? "bg-ai" : t.kind === "result" ? "bg-bull" : t.kind === "score" ? "bg-warn" : "bg-muted-foreground",
+                t.kind === "signal"
+                  ? "bg-ai"
+                  : t.kind === "result"
+                    ? "bg-bull"
+                    : t.kind === "score"
+                      ? "bg-warn"
+                      : "bg-muted-foreground",
               )}
             />
             <div className="min-w-0">
               <span className="num text-[0.6875rem] text-muted-foreground">{t.time}</span>
-              <p className={cn("text-xs leading-snug", t.kind === "signal" && "font-semibold text-ai")}>{t.text}</p>
+              <p
+                className={cn(
+                  "text-xs leading-snug",
+                  t.kind === "signal" && "font-semibold text-ai",
+                )}
+              >
+                {t.text}
+              </p>
             </div>
           </li>
         ))}
@@ -229,7 +258,10 @@ export function MultiTimeframePanel({ analysis }: { analysis: MarketAnalysis }) 
     <Panel title="Multi-Timeframe Analysis">
       <div className="space-y-2">
         {analysis.multiTimeframe.map((r) => (
-          <div key={r.timeframe} className="grid grid-cols-[3rem_5.5rem_minmax(0,1fr)] items-center gap-3">
+          <div
+            key={r.timeframe}
+            className="grid grid-cols-[3rem_5.5rem_minmax(0,1fr)] items-center gap-3"
+          >
             <span className="num text-xs font-semibold">{r.timeframe}</span>
             <BiasBadge bias={r.bias} />
             <ScoreBar score={r.score} />
@@ -283,12 +315,20 @@ export function LiquidityMap({ analysis }: { analysis: MarketAnalysis }) {
     <Panel title="Liquidity Map" subtitle="Resting liquidity and swept levels">
       <div className="relative h-[15rem] rounded-md border border-border bg-panel/60">
         {analysis.liquidity.map((l) => (
-          <div key={l.label} className="absolute inset-x-0" style={{ top: `${pos(l.price) * 0.9 + 4}%` }}>
+          <div
+            key={l.label}
+            className="absolute inset-x-0"
+            style={{ top: `${pos(l.price) * 0.9 + 4}%` }}
+          >
             <div className="flex items-center gap-2 px-3">
               <div
                 className={cn(
                   "h-px flex-1",
-                  l.kind === "swept" ? "bg-muted-foreground/40" : l.price > price ? "bg-bear/50" : "bg-bull/50",
+                  l.kind === "swept"
+                    ? "bg-muted-foreground/40"
+                    : l.price > price
+                      ? "bg-bear/50"
+                      : "bg-bull/50",
                 )}
                 style={{ opacity: 0.4 + l.strength / 200 }}
               />
@@ -320,12 +360,20 @@ export function TechnicalTab({ analysis }: { analysis: MarketAnalysis }) {
     <div className="grid gap-3 lg:grid-cols-2">
       <Panel title="Technical Metrics">
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-          <StatTile label="Trend" value={t.trend} tone={t.trend === "BULLISH" ? "bull" : t.trend === "BEARISH" ? "bear" : "neutral"} />
+          <StatTile
+            label="Trend"
+            value={t.trend}
+            tone={t.trend === "BULLISH" ? "bull" : t.trend === "BEARISH" ? "bear" : "neutral"}
+          />
           <StatTile label="RSI (14)" value={t.rsi} tone={t.rsi > 55 ? "bull" : "neutral"} />
           <StatTile label="ADX" value={t.adx} hint="Trend strength" />
           <StatTile label="ATR" value={t.atr} hint="Volatility unit" />
           <StatTile label="VWAP" value={t.vwap} tone={t.vwap === "ABOVE" ? "bull" : "bear"} />
-          <StatTile label="Momentum" value={t.momentum} tone={t.momentum === "POSITIVE" ? "bull" : "bear"} />
+          <StatTile
+            label="Momentum"
+            value={t.momentum}
+            tone={t.momentum === "POSITIVE" ? "bull" : "bear"}
+          />
           <StatTile label="Volatility" value={t.volatility} tone="warn" />
           <StatTile label="Volume" value={t.volume} tone="bull" />
           <StatTile label="MACD" value={t.macd} tone={t.macd > 0 ? "bull" : "bear"} />
@@ -339,8 +387,8 @@ export function TechnicalTab({ analysis }: { analysis: MarketAnalysis }) {
           <StatTile label="BB width" value={`${t.bbWidth}%`} />
         </div>
         <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-          Price trades above all three exponential averages with positive slope alignment, which the model treats as
-          trend-confirming rather than predictive on its own.
+          Price trades above all three exponential averages with positive slope alignment, which the
+          model treats as trend-confirming rather than predictive on its own.
         </p>
       </Panel>
     </div>
@@ -353,14 +401,25 @@ export function MacroTab({ analysis }: { analysis: MarketAnalysis }) {
       <Panel title="Gold Macro Intelligence" dense>
         <div className="divide-y divide-border">
           {analysis.macro.map((m) => (
-            <div key={m.name} className="grid grid-cols-[minmax(0,1fr)_auto_auto_auto] items-center gap-3 px-4 py-2.5">
+            <div
+              key={m.name}
+              className="grid grid-cols-[minmax(0,1fr)_auto_auto_auto] items-center gap-3 px-4 py-2.5"
+            >
               <span className="truncate text-xs font-medium">{m.name}</span>
               <span className="num text-xs">{m.value}</span>
               <span className={cn("num text-xs", m.changePct >= 0 ? "text-bull" : "text-bear")}>
                 {m.changePct > 0 ? "+" : ""}
                 {m.changePct}%
               </span>
-              <Chip tone={m.goldImpact === "BULLISH" ? "bull" : m.goldImpact === "BEARISH" ? "bear" : "neutral"}>
+              <Chip
+                tone={
+                  m.goldImpact === "BULLISH"
+                    ? "bull"
+                    : m.goldImpact === "BEARISH"
+                      ? "bear"
+                      : "neutral"
+                }
+              >
                 {m.goldImpact}
               </Chip>
             </div>
@@ -380,7 +439,9 @@ export function MacroTab({ analysis }: { analysis: MarketAnalysis }) {
                 key={m.name}
                 label={m.name}
                 value={m.weight * 4}
-                tone={m.goldImpact === "BULLISH" ? "bull" : m.goldImpact === "BEARISH" ? "bear" : "warn"}
+                tone={
+                  m.goldImpact === "BULLISH" ? "bull" : m.goldImpact === "BEARISH" ? "bear" : "warn"
+                }
                 sublabel={`${m.weight}% model weight · ${m.value}`}
               />
             ))}
@@ -405,8 +466,18 @@ export function OrderFlowTab({ analysis }: { analysis: MarketAnalysis }) {
                 </linearGradient>
               </defs>
               <CartesianGrid stroke="var(--color-border)" vertical={false} />
-              <XAxis dataKey="t" stroke="var(--color-muted-foreground)" fontSize={10} tickLine={false} />
-              <YAxis stroke="var(--color-muted-foreground)" fontSize={10} tickLine={false} width={30} />
+              <XAxis
+                dataKey="t"
+                stroke="var(--color-muted-foreground)"
+                fontSize={10}
+                tickLine={false}
+              />
+              <YAxis
+                stroke="var(--color-muted-foreground)"
+                fontSize={10}
+                tickLine={false}
+                width={30}
+              />
               <RTooltip
                 contentStyle={{
                   background: "var(--color-popover)",
@@ -468,8 +539,8 @@ export function ForecastTab({ analysis }: { analysis: MarketAnalysis }) {
           ))}
         </div>
         <p className="mt-4 border-t border-border pt-3 text-[0.6875rem] leading-relaxed text-muted-foreground">
-          These are model estimates over a probability distribution. They are not guarantees, and the model does not
-          claim to know a specific future price.
+          These are model estimates over a probability distribution. They are not guarantees, and
+          the model does not claim to know a specific future price.
         </p>
       </Panel>
       <Panel title="Key Levels">
@@ -480,15 +551,33 @@ export function ForecastTab({ analysis }: { analysis: MarketAnalysis }) {
             tone="ai"
           />
           <StatTile label="Key upside" value={fmtPrice(f.keyUpside, analysis.symbol)} tone="bull" />
-          <StatTile label="Key downside" value={fmtPrice(f.keyDownside, analysis.symbol)} tone="bear" />
-          <StatTile label="Invalidation" value={fmtPrice(f.invalidation, analysis.symbol)} tone="warn" />
+          <StatTile
+            label="Key downside"
+            value={fmtPrice(f.keyDownside, analysis.symbol)}
+            tone="bear"
+          />
+          <StatTile
+            label="Invalidation"
+            value={fmtPrice(f.invalidation, analysis.symbol)}
+            tone="warn"
+          />
         </div>
         <div className="mt-3 h-40">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={f.scenarios.map((s) => ({ name: s.scenario, v: s.probability }))}>
               <CartesianGrid stroke="var(--color-border)" vertical={false} />
-              <XAxis dataKey="name" stroke="var(--color-muted-foreground)" fontSize={10} tickLine={false} />
-              <YAxis stroke="var(--color-muted-foreground)" fontSize={10} tickLine={false} width={28} />
+              <XAxis
+                dataKey="name"
+                stroke="var(--color-muted-foreground)"
+                fontSize={10}
+                tickLine={false}
+              />
+              <YAxis
+                stroke="var(--color-muted-foreground)"
+                fontSize={10}
+                tickLine={false}
+                width={28}
+              />
               <Bar dataKey="v" radius={[3, 3, 0, 0]}>
                 {f.scenarios.map((s) => (
                   <Cell
@@ -528,8 +617,16 @@ export function RiskTab({ analysis }: { analysis: MarketAnalysis }) {
         <div className="grid grid-cols-2 gap-2">
           <StatTile label="Entry" value={m ? fmtPrice(m.entry, analysis.symbol) : "—"} tone="ai" />
           <StatTile label="Stop" value={m ? fmtPrice(m.stop, analysis.symbol) : "—"} tone="bear" />
-          <StatTile label="Take profit 1" value={m ? fmtPrice(m.tp1, analysis.symbol) : "—"} tone="bull" />
-          <StatTile label="Take profit 2" value={m ? fmtPrice(m.tp2, analysis.symbol) : "—"} tone="bull" />
+          <StatTile
+            label="Take profit 1"
+            value={m ? fmtPrice(m.tp1, analysis.symbol) : "—"}
+            tone="bull"
+          />
+          <StatTile
+            label="Take profit 2"
+            value={m ? fmtPrice(m.tp2, analysis.symbol) : "—"}
+            tone="bull"
+          />
           <StatTile label="Risk / reward" value={m ? `1:${m.rr.toFixed(1)}` : "—"} />
           <StatTile label="ATR risk" value={m?.atrRisk ?? "—"} />
         </div>
@@ -539,7 +636,10 @@ export function RiskTab({ analysis }: { analysis: MarketAnalysis }) {
           {m && <Chip tone="ai">Volatility {m.volatility}</Chip>}
         </div>
       </Panel>
-      <Panel title="Position Size Calculator" subtitle="Suggested size from structural stop distance">
+      <Panel
+        title="Position Size Calculator"
+        subtitle="Suggested size from structural stop distance"
+      >
         <div className="grid gap-3 sm:grid-cols-2">
           <div>
             <Label className="label-xs" htmlFor="acct">
@@ -606,7 +706,9 @@ export function RegimePanel({ analysis }: { analysis: MarketAnalysis }) {
     <Panel title="Market Regime Engine">
       <div className="flex flex-wrap items-center gap-2">
         <RegimeBadge regime={analysis.regime} className="text-sm" />
-        <span className="num text-xs text-muted-foreground">Confidence {analysis.regimeConfidence}%</span>
+        <span className="num text-xs text-muted-foreground">
+          Confidence {analysis.regimeConfidence}%
+        </span>
       </div>
       <div className="mt-3 grid grid-cols-2 gap-2">
         <StatTile label="Best strategy in regime" value={analysis.bestStrategy} tone="ai" />

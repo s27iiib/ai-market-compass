@@ -11,7 +11,14 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AiAnalystRouteImport } from './routes/ai-analyst'
+import { Route as AlertsRouteImport } from './routes/alerts'
+import { Route as BacktestingRouteImport } from './routes/backtesting'
+import { Route as JournalRouteImport } from './routes/journal'
+import { Route as ModelLabRouteImport } from './routes/model-lab'
+import { Route as RiskRouteImport } from './routes/risk'
 import { Route as ScannerRouteImport } from './routes/scanner'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as StrategiesRouteImport } from './routes/strategies'
 import { Route as MarketsIndexRouteImport } from './routes/markets.index'
 import { Route as MarketsSymbolRouteImport } from './routes/markets.$symbol'
 
@@ -25,9 +32,44 @@ const AiAnalystRoute = AiAnalystRouteImport.update({
   path: '/ai-analyst',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AlertsRoute = AlertsRouteImport.update({
+  id: '/alerts',
+  path: '/alerts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BacktestingRoute = BacktestingRouteImport.update({
+  id: '/backtesting',
+  path: '/backtesting',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JournalRoute = JournalRouteImport.update({
+  id: '/journal',
+  path: '/journal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModelLabRoute = ModelLabRouteImport.update({
+  id: '/model-lab',
+  path: '/model-lab',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RiskRoute = RiskRouteImport.update({
+  id: '/risk',
+  path: '/risk',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ScannerRoute = ScannerRouteImport.update({
   id: '/scanner',
   path: '/scanner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StrategiesRoute = StrategiesRouteImport.update({
+  id: '/strategies',
+  path: '/strategies',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MarketsIndexRoute = MarketsIndexRouteImport.update({
@@ -44,14 +86,28 @@ const MarketsSymbolRoute = MarketsSymbolRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ai-analyst': typeof AiAnalystRoute
+  '/alerts': typeof AlertsRoute
+  '/backtesting': typeof BacktestingRoute
+  '/journal': typeof JournalRoute
+  '/model-lab': typeof ModelLabRoute
+  '/risk': typeof RiskRoute
   '/scanner': typeof ScannerRoute
+  '/settings': typeof SettingsRoute
+  '/strategies': typeof StrategiesRoute
   '/markets/$symbol': typeof MarketsSymbolRoute
   '/markets/': typeof MarketsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ai-analyst': typeof AiAnalystRoute
+  '/alerts': typeof AlertsRoute
+  '/backtesting': typeof BacktestingRoute
+  '/journal': typeof JournalRoute
+  '/model-lab': typeof ModelLabRoute
+  '/risk': typeof RiskRoute
   '/scanner': typeof ScannerRoute
+  '/settings': typeof SettingsRoute
+  '/strategies': typeof StrategiesRoute
   '/markets/$symbol': typeof MarketsSymbolRoute
   '/markets': typeof MarketsIndexRoute
 }
@@ -59,20 +115,58 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/ai-analyst': typeof AiAnalystRoute
+  '/alerts': typeof AlertsRoute
+  '/backtesting': typeof BacktestingRoute
+  '/journal': typeof JournalRoute
+  '/model-lab': typeof ModelLabRoute
+  '/risk': typeof RiskRoute
   '/scanner': typeof ScannerRoute
+  '/settings': typeof SettingsRoute
+  '/strategies': typeof StrategiesRoute
   '/markets/$symbol': typeof MarketsSymbolRoute
   '/markets/': typeof MarketsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/ai-analyst' | '/scanner' | '/markets/$symbol' | '/markets/'
+  fullPaths:
+    | '/'
+    | '/ai-analyst'
+    | '/alerts'
+    | '/backtesting'
+    | '/journal'
+    | '/model-lab'
+    | '/risk'
+    | '/scanner'
+    | '/settings'
+    | '/strategies'
+    | '/markets/$symbol'
+    | '/markets/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ai-analyst' | '/scanner' | '/markets/$symbol' | '/markets'
+  to:
+    | '/'
+    | '/ai-analyst'
+    | '/alerts'
+    | '/backtesting'
+    | '/journal'
+    | '/model-lab'
+    | '/risk'
+    | '/scanner'
+    | '/settings'
+    | '/strategies'
+    | '/markets/$symbol'
+    | '/markets'
   id:
     | '__root__'
     | '/'
     | '/ai-analyst'
+    | '/alerts'
+    | '/backtesting'
+    | '/journal'
+    | '/model-lab'
+    | '/risk'
     | '/scanner'
+    | '/settings'
+    | '/strategies'
     | '/markets/$symbol'
     | '/markets/'
   fileRoutesById: FileRoutesById
@@ -80,7 +174,14 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AiAnalystRoute: typeof AiAnalystRoute
+  AlertsRoute: typeof AlertsRoute
+  BacktestingRoute: typeof BacktestingRoute
+  JournalRoute: typeof JournalRoute
+  ModelLabRoute: typeof ModelLabRoute
+  RiskRoute: typeof RiskRoute
   ScannerRoute: typeof ScannerRoute
+  SettingsRoute: typeof SettingsRoute
+  StrategiesRoute: typeof StrategiesRoute
   MarketsSymbolRoute: typeof MarketsSymbolRoute
   MarketsIndexRoute: typeof MarketsIndexRoute
 }
@@ -101,11 +202,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AiAnalystRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/alerts': {
+      id: '/alerts'
+      path: '/alerts'
+      fullPath: '/alerts'
+      preLoaderRoute: typeof AlertsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/backtesting': {
+      id: '/backtesting'
+      path: '/backtesting'
+      fullPath: '/backtesting'
+      preLoaderRoute: typeof BacktestingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/journal': {
+      id: '/journal'
+      path: '/journal'
+      fullPath: '/journal'
+      preLoaderRoute: typeof JournalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/model-lab': {
+      id: '/model-lab'
+      path: '/model-lab'
+      fullPath: '/model-lab'
+      preLoaderRoute: typeof ModelLabRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/risk': {
+      id: '/risk'
+      path: '/risk'
+      fullPath: '/risk'
+      preLoaderRoute: typeof RiskRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/scanner': {
       id: '/scanner'
       path: '/scanner'
       fullPath: '/scanner'
       preLoaderRoute: typeof ScannerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/strategies': {
+      id: '/strategies'
+      path: '/strategies'
+      fullPath: '/strategies'
+      preLoaderRoute: typeof StrategiesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/markets/': {
@@ -128,10 +278,27 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AiAnalystRoute: AiAnalystRoute,
+  AlertsRoute: AlertsRoute,
+  BacktestingRoute: BacktestingRoute,
+  JournalRoute: JournalRoute,
+  ModelLabRoute: ModelLabRoute,
+  RiskRoute: RiskRoute,
   ScannerRoute: ScannerRoute,
+  SettingsRoute: SettingsRoute,
+  StrategiesRoute: StrategiesRoute,
   MarketsSymbolRoute: MarketsSymbolRoute,
   MarketsIndexRoute: MarketsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

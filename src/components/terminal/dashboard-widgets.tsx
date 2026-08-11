@@ -1,7 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { ArrowUpRight, CalendarClock, MessageSquareText, Newspaper, TrendingDown, TrendingUp } from "lucide-react";
+import {
+  ArrowUpRight,
+  CalendarClock,
+  MessageSquareText,
+  Newspaper,
+  TrendingDown,
+  TrendingUp,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
@@ -57,7 +64,9 @@ export function MarketOverviewCards() {
             <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-2">
               <div className="min-w-0">
                 <div className="num truncate text-sm font-semibold">{q.symbol}</div>
-                <div className="num mt-0.5 text-lg font-semibold">{fmtPrice(q.price, q.symbol)}</div>
+                <div className="num mt-0.5 text-lg font-semibold">
+                  {fmtPrice(q.price, q.symbol)}
+                </div>
               </div>
               <div className="shrink-0 text-right">
                 <ChangeValue pct={q.changePct} />
@@ -112,30 +121,42 @@ export function BestOpportunities() {
       ) : isError ? (
         <ErrorState onRetry={() => refetch()} />
       ) : rows.length === 0 ? (
-        <EmptyState title="No qualifying setups" hint="Nothing currently clears the platform threshold." />
+        <EmptyState
+          title="No qualifying setups"
+          hint="Nothing currently clears the platform threshold."
+        />
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full min-w-[46rem] text-xs">
             <thead>
               <tr className="border-b border-border text-left">
-                {["Asset", "Direction", "AI", "Strategy", "Prob.", "R", "Regime", "Risk", ""].map((h) => (
-                  <th key={h} className="label-xs px-4 py-2 font-medium whitespace-nowrap">
-                    {h}
-                  </th>
-                ))}
+                {["Asset", "Direction", "AI", "Strategy", "Prob.", "R", "Regime", "Risk", ""].map(
+                  (h) => (
+                    <th key={h} className="label-xs px-4 py-2 font-medium whitespace-nowrap">
+                      {h}
+                    </th>
+                  ),
+                )}
               </tr>
             </thead>
             <tbody>
               {rows.map(({ quote, signal }) => (
-                <tr key={signal.id} className="border-b border-border/60 last:border-0 hover:bg-accent/40">
-                  <td className="num px-4 py-2.5 font-semibold whitespace-nowrap">{quote.symbol}</td>
+                <tr
+                  key={signal.id}
+                  className="border-b border-border/60 last:border-0 hover:bg-accent/40"
+                >
+                  <td className="num px-4 py-2.5 font-semibold whitespace-nowrap">
+                    {quote.symbol}
+                  </td>
                   <td className="px-4 py-2.5">
                     <DirectionBadge direction={signal.direction} />
                   </td>
                   <td className="num px-4 py-2.5 w-28">
                     <ScoreBar score={signal.aiScore} />
                   </td>
-                  <td className="px-4 py-2.5 whitespace-nowrap text-muted-foreground">{signal.strategy}</td>
+                  <td className="px-4 py-2.5 whitespace-nowrap text-muted-foreground">
+                    {signal.strategy}
+                  </td>
                   <td className="num px-4 py-2.5">{signal.probability}%</td>
                   <td className="num px-4 py-2.5">1:{signal.metrics?.rr.toFixed(1) ?? "—"}</td>
                   <td className="px-4 py-2.5">
@@ -215,7 +236,10 @@ export function CurrencyStrengthPanel() {
 /* --------------------------------------------------- Economic calendar */
 
 export function EconomicCalendarPanel() {
-  const { data, isLoading } = useQuery({ queryKey: ["calendar"], queryFn: economicService.getCalendar });
+  const { data, isLoading } = useQuery({
+    queryKey: ["calendar"],
+    queryFn: economicService.getCalendar,
+  });
   const next = data?.find((e) => e.minutesAway > 0);
 
   return (
@@ -238,7 +262,10 @@ export function EconomicCalendarPanel() {
       ) : (
         <div className="divide-y divide-border">
           {data.map((e) => (
-            <div key={e.id} className="grid grid-cols-[3rem_minmax(0,1fr)_auto] items-start gap-3 px-4 py-2.5">
+            <div
+              key={e.id}
+              className="grid grid-cols-[3rem_minmax(0,1fr)_auto] items-start gap-3 px-4 py-2.5"
+            >
               <span className="num text-xs text-muted-foreground">{e.time}</span>
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-1.5">
@@ -376,7 +403,11 @@ export function AIMarketSummary() {
             </div>
           </div>
           <div className="shrink-0">
-            <AIConfluenceScore score={84} size={104} caption="AI confidence in the current interpretation." />
+            <AIConfluenceScore
+              score={84}
+              size={104}
+              caption="AI confidence in the current interpretation."
+            />
           </div>
         </div>
       )}

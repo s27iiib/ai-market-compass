@@ -47,7 +47,11 @@ export function CommandPalette({
             <CommandItem
               key={a.symbol}
               value={`${a.symbol} ${a.name}`}
-              onSelect={() => go(() => navigate({ to: "/markets/$symbol", params: { symbol: symbolToSlug(a.symbol) } }))}
+              onSelect={() =>
+                go(() =>
+                  navigate({ to: "/markets/$symbol", params: { symbol: symbolToSlug(a.symbol) } }),
+                )
+              }
             >
               <LineChart className="size-3.5 text-ai" />
               <span className="num">{a.symbol}</span>
@@ -95,7 +99,11 @@ export function CommandPalette({
 
         <CommandGroup heading="Strategies">
           {STRATEGIES.map((s) => (
-            <CommandItem key={s.id} value={`strategy ${s.name}`} onSelect={() => go(() => navigate({ to: "/strategies" }))}>
+            <CommandItem
+              key={s.id}
+              value={`strategy ${s.name}`}
+              onSelect={() => go(() => navigate({ to: "/strategies" }))}
+            >
               <FlaskConical className="size-3.5 text-muted-foreground" /> {s.name}
             </CommandItem>
           ))}
@@ -103,7 +111,11 @@ export function CommandPalette({
 
         <CommandGroup heading="Journal">
           {JOURNAL.slice(0, 4).map((j) => (
-            <CommandItem key={j.id} value={`journal ${j.symbol} ${j.strategy}`} onSelect={() => go(() => navigate({ to: "/journal" }))}>
+            <CommandItem
+              key={j.id}
+              value={`journal ${j.symbol} ${j.strategy}`}
+              onSelect={() => go(() => navigate({ to: "/journal" }))}
+            >
               <BookOpen className="size-3.5 text-muted-foreground" />
               <span className="num">{j.symbol}</span>
               <span className="text-muted-foreground">
@@ -116,7 +128,11 @@ export function CommandPalette({
 
         <CommandGroup heading="News">
           {NEWS.slice(0, 3).map((n) => (
-            <CommandItem key={n.id} value={`news ${n.headline}`} onSelect={() => go(() => navigate({ to: "/" }))}>
+            <CommandItem
+              key={n.id}
+              value={`news ${n.headline}`}
+              onSelect={() => go(() => navigate({ to: "/" }))}
+            >
               <span className="truncate">{n.headline}</span>
             </CommandItem>
           ))}
