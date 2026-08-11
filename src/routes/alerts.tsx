@@ -30,8 +30,7 @@ import {
   LoadingPanel,
   Panel,
 } from "@/components/terminal/primitives";
-import { alertService } from "@/services";
-import { ASSETS } from "@/lib/mock-data";
+import { alertService, marketService } from "@/services";
 import type { Alert } from "@/lib/types";
 
 export const Route = createFileRoute("/alerts")({
@@ -63,6 +62,10 @@ function Alerts() {
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["alerts"],
     queryFn: alertService.getAlerts,
+  });
+  const { data: assets = [] } = useQuery({
+    queryKey: ["assets"],
+    queryFn: marketService.getAssets,
   });
 
   const [alerts, setAlerts] = useState<Alert[]>([]);
@@ -127,7 +130,7 @@ function Alerts() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {ASSETS.map((a) => (
+                      {assets.map((a) => (
                         <SelectItem key={a.symbol} value={a.symbol} className="text-xs">
                           {a.symbol}
                         </SelectItem>

@@ -1,4 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import {
   Activity,
   Bell,
@@ -21,7 +22,8 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import { ASSETS, JOURNAL, NEWS, STRATEGIES, symbolToSlug } from "@/lib/mock-data";
+import { JOURNAL, NEWS, STRATEGIES, symbolToSlug } from "@/lib/mock-data";
+import { marketService } from "@/services";
 
 export function CommandPalette({
   open,
@@ -31,6 +33,10 @@ export function CommandPalette({
   onOpenChange: (v: boolean) => void;
 }) {
   const navigate = useNavigate();
+  const { data: assets = [] } = useQuery({
+    queryKey: ["assets"],
+    queryFn: marketService.getAssets,
+  });
   const go = (fn: () => void) => {
     onOpenChange(false);
     fn();
@@ -43,7 +49,7 @@ export function CommandPalette({
         <CommandEmpty>No results found.</CommandEmpty>
 
         <CommandGroup heading="Markets">
-          {ASSETS.map((a) => (
+          {assets.map((a) => (
             <CommandItem
               key={a.symbol}
               value={`${a.symbol} ${a.name}`}

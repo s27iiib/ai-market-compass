@@ -23,6 +23,7 @@
  *   GET  /alerts, POST /alerts           -> alertService.*
  *   POST /ai/chat                        -> aiService.chat
  */
+import { apiGet } from "@/lib/api-client";
 import {
   ALERTS,
   ASSETS,
@@ -41,6 +42,7 @@ import {
 } from "@/lib/mock-data";
 import type {
   Alert,
+  Asset,
   BacktestResult,
   Candle,
   JournalEntry,
@@ -55,9 +57,11 @@ const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 export const DEMO_MODE = true;
 
 export const marketService = {
-  async getAssets() {
-    await delay(120);
-    return ASSETS;
+  // The first live endpoint — every other function below still reads from
+  // mock-data.ts until market data (Phase 4) and the signal engine (Phase 8)
+  // exist on the backend.
+  async getAssets(): Promise<Asset[]> {
+    return apiGet<Asset[]>("/assets");
   },
   async getMarkets(): Promise<MarketQuote[]> {
     await delay(260);

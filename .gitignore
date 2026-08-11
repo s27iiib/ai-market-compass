@@ -20,6 +20,16 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# Python / backend
+backend/.venv
+backend/__pycache__
+backend/**/__pycache__
+backend/.env
+*.pyc
+
+# Claude Code session state (machine/session-local, not project config)
+.claude/*.lock
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

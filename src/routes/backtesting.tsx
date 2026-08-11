@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Play } from "lucide-react";
 import {
@@ -24,8 +24,7 @@ import {
 } from "@/components/ui/select";
 import { PageHeader } from "@/components/terminal/app-shell";
 import { EmptyState, LoadingPanel, Panel, StatTile } from "@/components/terminal/primitives";
-import { backtestService } from "@/services";
-import { ASSETS } from "@/lib/mock-data";
+import { backtestService, marketService } from "@/services";
 import { fmtPct } from "@/lib/format";
 
 export const Route = createFileRoute("/backtesting")({
@@ -53,6 +52,10 @@ function Backtesting() {
   const [symbol, setSymbol] = useState("XAU/USD");
   const [timeframe, setTimeframe] = useState("15m");
   const [seed, setSeed] = useState(7);
+  const { data: assets = [] } = useQuery({
+    queryKey: ["assets"],
+    queryFn: marketService.getAssets,
+  });
 
   const run = useMutation({
     mutationFn: () => backtestService.run({ seed }),
@@ -77,7 +80,7 @@ function Backtesting() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {ASSETS.map((a) => (
+                {assets.map((a) => (
                   <SelectItem key={a.symbol} value={a.symbol} className="text-xs">
                     {a.symbol}
                   </SelectItem>
