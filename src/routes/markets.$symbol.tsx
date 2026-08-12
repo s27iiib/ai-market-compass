@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Bell, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -39,6 +39,7 @@ import {
 import { assetBySymbol, slugToSymbol } from "@/lib/mock-data";
 import { marketService } from "@/services";
 import { fmtPrice } from "@/lib/format";
+import { useLivePrices } from "@/lib/use-live-prices";
 import type { Timeframe } from "@/lib/types";
 
 const TIMEFRAMES: Timeframe[] = ["1m", "5m", "15m", "30m", "1H", "4H", "1D", "1W"];
@@ -101,6 +102,20 @@ function Workspace() {
     queryKey: ["analysis", symbol],
     queryFn: () => marketService.getAnalysis(symbol),
   });
+
+  const { tick, connected } = useLivePrices(symbol);
+
+  // Splice the live forming candle onto the historical series: replace the
+  // last bar if it's the same interval, append if the interval just rolled.
+  const liveCandles = useMemo(() => {
+    const history = candles.data;
+    const forming = tick?.candles[tf];
+    if (!history || !forming) return history;
+    const last = history[history.length - 1];
+    if (last && last.t === forming.t) return [...history.slice(0, -1), forming];
+    if (last && forming.t > last.t) return [...history, forming];
+    return history;
+  }, [candles.data, tick, tf]);
 
   const a = analysis.data;
   const levels = a
@@ -177,9 +192,12 @@ function Workspace() {
           <Panel
             dense
             title={`${symbol} · ${tf}`}
-            subtitle="Simulated candles · scroll to zoom, drag to pan"
+            subtitle={
+              connected ? "Live · scroll to zoom, drag to pan" : "Scroll to zoom, drag to pan"
+            }
             actions={
               <div className="flex flex-wrap items-center gap-1">
+                {connected && <span className="live-dot mr-1.5" />}
                 {TIMEFRAMES.map((t) => (
                   <button
                     key={t}
@@ -210,15 +228,15 @@ function Workspace() {
                 </Toggle>
               ))}
             </div>
-            {candles.isLoading || !candles.data || !levels ? (
+            {candles.isError ? (
+              <ErrorState onRetry={() => candles.refetch()} />
+            ) : candles.isLoading || !liveCandles || !levels ? (
               <div className="p-4">
                 <LoadingPanel rows={8} />
               </div>
-            ) : candles.isError ? (
-              <ErrorState onRetry={() => candles.refetch()} />
             ) : (
               <CandlestickChart
-                candles={candles.data}
+                candles={liveCandles}
                 symbol={symbol}
                 levels={levels}
                 overlays={overlays}

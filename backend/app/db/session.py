@@ -1,4 +1,5 @@
 from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
 
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
@@ -38,5 +39,15 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="DATABASE_URL is not configured. Set it in backend/.env.",
         )
+    async with _session_factory() as session:
+        yield session
+
+
+@asynccontextmanager
+async def session_scope() -> AsyncGenerator[AsyncSession, None]:
+    """For use outside FastAPI's dependency injection — standalone scripts."""
+    engine = get_engine()
+    if engine is None or _session_factory is None:
+        raise RuntimeError("DATABASE_URL is not configured. Set it in backend/.env.")
     async with _session_factory() as session:
         yield session

@@ -38,7 +38,7 @@ import {
   buildAnalysis,
   buildBacktest,
   buildQuote,
-  generateCandles,
+  symbolToSlug,
 } from "@/lib/mock-data";
 import type {
   Alert,
@@ -72,8 +72,7 @@ export const marketService = {
     return buildQuote(symbol);
   },
   async getCandles(symbol: string, tf: Timeframe): Promise<Candle[]> {
-    await delay(220);
-    return generateCandles(symbol, tf);
+    return apiGet<Candle[]>(`/markets/${symbolToSlug(symbol)}/candles?timeframe=${tf}`);
   },
   async getAnalysis(symbol: string): Promise<MarketAnalysis> {
     await delay(320);
