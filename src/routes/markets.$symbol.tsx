@@ -37,7 +37,7 @@ import {
   TechnicalTab,
 } from "@/components/terminal/workspace";
 import { assetBySymbol, slugToSymbol } from "@/lib/mock-data";
-import { marketService } from "@/services";
+import { macroService, marketService } from "@/services";
 import { fmtPrice } from "@/lib/format";
 import { useLivePrices } from "@/lib/use-live-prices";
 import type { Timeframe } from "@/lib/types";
@@ -108,6 +108,12 @@ function Workspace() {
     queryFn: () => marketService.getTechnical(symbol, tf),
     // 404 until a timeframe is backfilled, 409 when there's under 200 candles
     // for the 200-period MA — neither is worth retrying.
+    retry: false,
+  });
+
+  const macro = useQuery({
+    queryKey: ["macro"],
+    queryFn: macroService.getMacro,
     retry: false,
   });
 
@@ -313,7 +319,7 @@ function Workspace() {
                 <LiquidityMap analysis={a} />
               </TabsContent>
               <TabsContent value="macro" className="mt-3">
-                <MacroTab analysis={a} />
+                <MacroTab analysis={a} macro={macro.data} />
               </TabsContent>
               <TabsContent value="orderflow" className="mt-3">
                 <OrderFlowTab analysis={a} />

@@ -28,7 +28,6 @@ import {
   ALERTS,
   ASSETS,
   CURRENCY_STRENGTH,
-  ECONOMIC_EVENTS,
   JOURNAL,
   MODELS,
   NEWS,
@@ -45,7 +44,9 @@ import type {
   Asset,
   BacktestResult,
   Candle,
+  EconomicEvent,
   JournalEntry,
+  MacroMetric,
   MarketAnalysis,
   MarketQuote,
   TechnicalAnalysis,
@@ -105,9 +106,14 @@ export const marketService = {
 };
 
 export const economicService = {
-  async getCalendar() {
-    await delay(240);
-    return ECONOMIC_EVENTS;
+  async getCalendar(): Promise<EconomicEvent[]> {
+    return apiGet<EconomicEvent[]>("/economic-calendar");
+  },
+};
+
+export const macroService = {
+  async getMacro(): Promise<{ metrics: MacroMetric[]; macroScore: number }> {
+    return apiGet<{ metrics: MacroMetric[]; macroScore: number }>("/macro");
   },
 };
 

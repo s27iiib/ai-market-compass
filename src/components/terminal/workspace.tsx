@@ -29,7 +29,7 @@ import {
   ScoreBar,
   StatTile,
 } from "@/components/terminal/primitives";
-import type { MarketAnalysis, TechnicalAnalysis } from "@/lib/types";
+import type { MacroMetric, MarketAnalysis, TechnicalAnalysis } from "@/lib/types";
 import { fmtPrice } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -475,12 +475,26 @@ function StructureFindings({
   );
 }
 
-export function MacroTab({ analysis }: { analysis: MarketAnalysis }) {
+export function MacroTab({
+  analysis,
+  macro,
+}: {
+  analysis: MarketAnalysis;
+  macro?: { metrics: MacroMetric[]; macroScore: number } | undefined;
+}) {
+  // Real macro series when the backend has them, simulated otherwise.
+  const metrics = macro?.metrics ?? analysis.macro;
+  const score = macro?.macroScore ?? analysis.macroScore;
+  const isLive = !!macro;
   return (
     <div className="grid gap-3 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-      <Panel title="Gold Macro Intelligence" dense>
+      <Panel
+        title="Gold Macro Intelligence"
+        subtitle={isLive ? "Live series · 24h change" : "Simulated"}
+        dense
+      >
         <div className="divide-y divide-border">
-          {analysis.macro.map((m) => (
+          {metrics.map((m) => (
             <div
               key={m.name}
               className="grid grid-cols-[minmax(0,1fr)_auto_auto_auto] items-center gap-3 px-4 py-2.5"
@@ -507,10 +521,10 @@ export function MacroTab({ analysis }: { analysis: MarketAnalysis }) {
         </div>
       </Panel>
       <Panel title="Gold Macro Score" ai>
-        <AIConfluenceScore score={analysis.macroScore} caption="Weighted macro factor composite." />
+        <AIConfluenceScore score={score} caption="Weighted macro factor composite." />
         <div className="mt-4 space-y-2 border-t border-border pt-3">
           <div className="label-xs">Largest contributors</div>
-          {analysis.macro
+          {metrics
             .slice()
             .sort((a, b) => b.weight - a.weight)
             .slice(0, 4)
