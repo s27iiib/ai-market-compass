@@ -65,6 +65,26 @@ export interface TechnicalMetrics {
   macd: number;
 }
 
+/** Live technical analysis from the backend — GET /markets/{symbol}/technical.
+ *  Extends TechnicalMetrics with the deterministic structure findings
+ *  (swings, BOS/CHOCH, levels, liquidity) computed in the Python engine. */
+export interface TechnicalAnalysis extends TechnicalMetrics {
+  symbol: string;
+  timeframe: string;
+  timestamp: number;
+  structureTrend: "BULLISH" | "BEARISH" | "RANGE";
+  swings: { timestamp: number; price: number; kind: string; label: string | null }[];
+  breaks: {
+    timestamp: number;
+    price: number;
+    kind: string;
+    direction: string;
+    brokenLevel: number;
+  }[];
+  levels: { price: number; touches: number; kind: string; lastTimestamp: number }[];
+  liquidity: { price: number; kind: string; swept: boolean }[];
+}
+
 export interface StructureEvent {
   timeframe: Timeframe;
   items: { label: string; ok: boolean }[];

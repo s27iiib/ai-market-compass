@@ -29,7 +29,7 @@ import {
   ScoreBar,
   StatTile,
 } from "@/components/terminal/primitives";
-import type { MarketAnalysis } from "@/lib/types";
+import type { MarketAnalysis, TechnicalAnalysis } from "@/lib/types";
 import { fmtPrice } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -354,11 +354,23 @@ export function LiquidityMap({ analysis }: { analysis: MarketAnalysis }) {
 
 /* --------------------------------------------------------- Tab bodies */
 
-export function TechnicalTab({ analysis }: { analysis: MarketAnalysis }) {
-  const t = analysis.technical;
+export function TechnicalTab({
+  analysis,
+  technical,
+}: {
+  analysis: MarketAnalysis;
+  technical?: TechnicalAnalysis | undefined;
+}) {
+  // Real computed indicators when the backend has them; the simulated set
+  // otherwise, so the tab still renders for timeframes not yet backfilled.
+  const t = technical ?? analysis.technical;
+  const isLive = !!technical;
   return (
     <div className="grid gap-3 lg:grid-cols-2">
-      <Panel title="Technical Metrics">
+      <Panel
+        title="Technical Metrics"
+        subtitle={isLive ? `Computed · ${technical.timeframe}` : "Simulated"}
+      >
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           <StatTile
             label="Trend"
@@ -387,11 +399,79 @@ export function TechnicalTab({ analysis }: { analysis: MarketAnalysis }) {
           <StatTile label="BB width" value={`${t.bbWidth}%`} />
         </div>
         <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-          Price trades above all three exponential averages with positive slope alignment, which the
-          model treats as trend-confirming rather than predictive on its own.
+          {isLive
+            ? "Moving averages and band width computed from stored candles. Alignment is trend-confirming evidence, not a prediction on its own."
+            : "Price trades above all three exponential averages with positive slope alignment, which the model treats as trend-confirming rather than predictive on its own."}
         </p>
       </Panel>
+
+      {technical && <StructureFindings technical={technical} symbol={analysis.symbol} />}
     </div>
+  );
+}
+
+function StructureFindings({
+  technical,
+  symbol,
+}: {
+  technical: TechnicalAnalysis;
+  symbol: string;
+}) {
+  const recentBreaks = technical.breaks.slice(-4).reverse();
+  const pools = technical.liquidity.slice(0, 6);
+
+  return (
+    <>
+      <Panel title="Market Structure" subtitle={`Structure trend · ${technical.structureTrend}`}>
+        {recentBreaks.length === 0 ? (
+          <p className="text-xs text-muted-foreground">No structure breaks detected in range.</p>
+        ) : (
+          <div className="space-y-2">
+            {recentBreaks.map((b) => (
+              <div key={b.timestamp} className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Chip tone={b.direction === "BULLISH" ? "bull" : "bear"}>{b.kind}</Chip>
+                  <span className="text-xs text-muted-foreground">
+                    broke {fmtPrice(b.brokenLevel, symbol)}
+                  </span>
+                </div>
+                <span className="num text-xs">{fmtPrice(b.price, symbol)}</span>
+              </div>
+            ))}
+          </div>
+        )}
+        <p className="mt-3 border-t border-border pt-3 text-[0.6875rem] leading-relaxed text-muted-foreground">
+          BOS continues the prevailing trend; CHOCH is the first break against it. Swings are
+          confirmed only after later candles print, so structure lags price by design.
+        </p>
+      </Panel>
+
+      <Panel title="Liquidity & Levels" subtitle="Equal highs/lows and repeated rejections">
+        <div className="space-y-1.5">
+          {pools.map((p) => (
+            <div key={`${p.kind}-${p.price}`} className="flex items-center justify-between gap-2">
+              <span className="text-xs text-muted-foreground">{p.kind}</span>
+              <div className="flex items-center gap-2">
+                <span className="num text-xs">{fmtPrice(p.price, symbol)}</span>
+                {p.swept && <Chip tone="warn">SWEPT</Chip>}
+              </div>
+            </div>
+          ))}
+        </div>
+        {technical.levels.length > 0 && (
+          <div className="mt-3 space-y-1.5 border-t border-border pt-3">
+            {technical.levels.slice(0, 4).map((level) => (
+              <div key={level.price} className="flex items-center justify-between gap-2">
+                <Chip tone={level.kind === "resistance" ? "bear" : "bull"}>{level.kind}</Chip>
+                <span className="num text-xs">
+                  {fmtPrice(level.price, symbol)} · {level.touches} touches
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </Panel>
+    </>
   );
 }
 

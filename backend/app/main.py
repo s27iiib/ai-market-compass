@@ -7,12 +7,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import select
 
-from app.api.routes import assets, candles, health, ws
+from app.api.routes import assets, candles, health, technical, ws
 from app.core.config import get_settings
 from app.db.base import Base
 from app.db.seed import seed_assets_if_empty
 from app.db.session import get_engine
-from app.models import Asset, Candle  # noqa: F401 — registers tables on Base.metadata
+from app.models import Asset, Candle, Indicator  # noqa: F401 — registers tables on Base.metadata
 from app.services.market_data_worker import run_market_data_worker
 
 logger = logging.getLogger("aurum")
@@ -65,4 +65,5 @@ app.add_middleware(
 app.include_router(health.router)
 app.include_router(assets.router)
 app.include_router(candles.router)
+app.include_router(technical.router)
 app.include_router(ws.router)

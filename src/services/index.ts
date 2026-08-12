@@ -48,6 +48,7 @@ import type {
   JournalEntry,
   MarketAnalysis,
   MarketQuote,
+  TechnicalAnalysis,
   Timeframe,
 } from "@/lib/types";
 
@@ -73,6 +74,9 @@ export const marketService = {
   },
   async getCandles(symbol: string, tf: Timeframe): Promise<Candle[]> {
     return apiGet<Candle[]>(`/markets/${symbolToSlug(symbol)}/candles?timeframe=${tf}`);
+  },
+  async getTechnical(symbol: string, tf: Timeframe): Promise<TechnicalAnalysis> {
+    return apiGet<TechnicalAnalysis>(`/markets/${symbolToSlug(symbol)}/technical?timeframe=${tf}`);
   },
   async getAnalysis(symbol: string): Promise<MarketAnalysis> {
     await delay(320);

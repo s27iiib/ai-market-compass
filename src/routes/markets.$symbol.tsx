@@ -103,6 +103,14 @@ function Workspace() {
     queryFn: () => marketService.getAnalysis(symbol),
   });
 
+  const technical = useQuery({
+    queryKey: ["technical", symbol, tf],
+    queryFn: () => marketService.getTechnical(symbol, tf),
+    // 404 until a timeframe is backfilled, 409 when there's under 200 candles
+    // for the 200-period MA — neither is worth retrying.
+    retry: false,
+  });
+
   const { tick, connected } = useLivePrices(symbol);
 
   // Splice the live forming candle onto the historical series: replace the
@@ -298,7 +306,7 @@ function Workspace() {
                 </Panel>
               </TabsContent>
               <TabsContent value="technical" className="mt-3">
-                <TechnicalTab analysis={a} />
+                <TechnicalTab analysis={a} technical={technical.data} />
               </TabsContent>
               <TabsContent value="structure" className="mt-3 grid gap-3 lg:grid-cols-2">
                 <StructurePanel analysis={a} />
